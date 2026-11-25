@@ -1,7 +1,7 @@
 # Reel Studio استوديو الريل
 
 A complete, batteries-included pipeline for producing premium vertical Arabic ad reels
-(1080x1920, 200fps delivery container, H.264+AAC, WhatsApp-ready under 14 MB) with
+(1080x1920, 60fps delivery container, H.264+AAC, WhatsApp-ready under 14 MB) with
 Remotion 4. One command installs everything; one script renders end to end.
 
 ## Features
@@ -35,8 +35,8 @@ Remotion 4. One command installs everything; one script renders end to end.
 ./INSTALL.sh                      # one-command setup (node modules, fonts, SFX, vendor copy)
 cd template
 npx remotion still src/index.ts Demo /tmp/preview.png --frame=45   # smoke test
-bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt --fps 200
-node scripts/qa-gate.mjs out.mp4 --captions captions.json --expect-audio --fps 200
+bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt
+node scripts/qa-gate.mjs out.mp4 --captions captions.json --expect-audio
 ```
 
 Then read **RUNBOOK.md** — it is the full production manual (Egyptian Arabic + English):

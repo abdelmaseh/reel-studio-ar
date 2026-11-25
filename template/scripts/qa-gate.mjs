@@ -4,7 +4,7 @@
 // vendored reel-studio arabic module (Apache-2.0, https://github.com/mohamedabdou-ai/reel-studio).
 //
 // Usage: node scripts/qa-gate.mjs <file.mp4> [--captions captions.json] [--max-mb 14]
-//          [--expect-video-sec N] [--expect-audio] [--fps 200] [--size 1080x1920]
+//          [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]
 // Exit 1 on any FAIL. needs-review items print but never block.
 import {spawnSync} from 'node:child_process';
 import {statSync, readFileSync} from 'node:fs';
@@ -13,7 +13,7 @@ import {kashidaSlots} from '../src/vendor/reel-studio/arabic/kashida.ts';
 
 const args = process.argv.slice(2);
 const file = args[0];
-if (!file) { console.error('usage: qa-gate.mjs <file.mp4> [--captions x.json] [--max-mb 14] [--expect-video-sec N] [--expect-audio] [--fps 200] [--size 1080x1920]'); process.exit(2); }
+if (!file) { console.error('usage: qa-gate.mjs <file.mp4> [--captions x.json] [--max-mb 14] [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]'); process.exit(2); }
 const opt = (name, dflt) => { const i = args.indexOf('--' + name); return i >= 0 ? args[i + 1] : dflt; };
 const has = (name) => args.includes('--' + name);
 const maxMb = Number(opt('max-mb', 14));
@@ -34,7 +34,7 @@ if (!v) fail('no-video-stream', 'file has no video stream');
 else {
   const [wn, hn] = String(opt('size', '1080x1920')).split('x').map(Number);
   if (v.width !== wn || v.height !== hn) fail('dimensions', `got ${v.width}x${v.height}, want ${wn}x${hn}`); else pass('dimensions', `${v.width}x${v.height}`);
-  const fpsWant = Number(opt('fps', 200));
+  const fpsWant = Number(opt('fps', 60));
   const [frN, frD] = String(v.avg_frame_rate ?? '0/1').split('/').map(Number);
   const fps = frD ? frN / frD : 0;
   if (Math.abs(fps - fpsWant) > 0.5) fail('fps', `got ${fps}, want ${fpsWant}`); else pass('fps', String(fps));

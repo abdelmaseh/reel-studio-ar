@@ -6,7 +6,7 @@ import {StyleCard3D} from './demo/StyleCard3D';
 import {ACTIVE_STYLE, type StyleName} from './styles';
 
 // Studio contract: 1080x1920 vertical. Comp fps is 50; the delivery encode conforms
-// the container to 200fps (scripts/render-reel.sh). Motion blur is baked at render time.
+// the container to 60fps by default (scripts/render-reel.sh). Motion blur is baked at render time.
 export const FPS = 50;
 
 const STILL_DUR = 250;

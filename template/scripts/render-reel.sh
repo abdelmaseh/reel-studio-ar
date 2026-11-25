@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Sequential chunked render + delivery encode for the 1-CPU sandbox.
-# Usage: render-reel.sh <CompositionId> <totalFrames> <out.mp4> [--voiceover vo.mp3] [--mix spec.txt] [--fps 200] [--max-mb 14] [--chunk 100]
+# Usage: render-reel.sh <CompositionId> <totalFrames> <out.mp4> [--voiceover vo.mp3] [--mix spec.txt] [--fps 60] [--max-mb 14] [--chunk 100]
 # Mix spec lines: <audio file>|<start sec>|<volume 0-1>
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 COMP="$1"; TOTAL="$2"; OUT="$3"; shift 3
-VO=""; MIX=""; FPS_OUT=200; MAXMB=14; CHUNK=100
+VO=""; MIX=""; FPS_OUT=60; MAXMB=14; CHUNK=100
 while [ $# -gt 0 ]; do
   case "$1" in
     --voiceover) VO="$2"; shift 2;; --mix) MIX="$2"; shift 2;; --fps) FPS_OUT="$2"; shift 2;;

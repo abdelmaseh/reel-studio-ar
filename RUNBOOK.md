@@ -1,7 +1,7 @@
 # RUNBOOK — دليل الإنتاج الكامل
 
 Egyptian Arabic first, English summary under each section. Follow it top to bottom and a
-finished reel comes out the other end: 1080x1920, 200fps container, H.264+AAC, under 14 MB.
+finished reel comes out the other end: 1080x1920, 60fps container (default, override with --fps), H.264+AAC, under 14 MB.
 
 ---
 
@@ -198,22 +198,22 @@ vertical and grade footage to the reel's look.
 البيئة CPU واحدة — ريندر متسلسل على شُقف (chunks) وبعدين دمج:
 
 ```bash
-bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt --fps 200 --max-mb 14
+bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt --max-mb 14
 ```
 
 السكريبت بيعمل: ريندر متسلسل concurrency=1 → concat → خلط الصوت → تحويل الكونتينر لـ
-200fps → ضغط تحت 14 ميجا (2-pass لو لزم). الكومب نفسه 50fps؛ البلور متخبط في الفريمات
-فالتحويل لـ 200 ما بيخسرش حاجة.
+60fps (الافتراضي، و`--fps 200` لو عايز 200) → ضغط تحت 14 ميجا (2-pass لو لزم). الكومب نفسه 50fps؛ البلور متخبط في الفريمات
+فالتحويل لـ 60 (أو 200) ما بيخسرش حاجة.
 
 **وبعدين إجباري:**
-1. `node scripts/qa-gate.mjs out.mp4 --captions captions.json --expect-video-sec <N> --expect-audio --fps 200 --max-mb 14`
+1. `node scripts/qa-gate.mjs out.mp4 --captions captions.json --expect-video-sec <N> --expect-audio --max-mb 14`
    — بيفحص: الأبعاد، الفريم ريت، المدة، الحجم، فك الترميز كامل، فريمات سودا/مجمدة،
    قمة الصوت، ولينت العربي. البوابة بتفشل = مفيش تسليم.
 2. شوف الفريمات بعينك: اطلع 8-12 فريم (منهم فريمات الضربات والانتقال) واتأكد من
    الظلال والقراية والأمان. اعمل contact sheet.
 3. عدي على `vendor/cinematic-motion/quality-checklist.md` قبل ما تسلّم.
 
-Sequential chunked renders (1 CPU), concat, audio mix, 200fps conform, size compress,
+Sequential chunked renders (1 CPU), concat, audio mix, 60fps conform (default; --fps overrides), size compress,
 then the QA gate and a human eyeball pass on extracted frames. The gate fails = no delivery.
 
 ---
