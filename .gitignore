@@ -1,0 +1,12 @@
+node_modules/
+out/
+work/
+assets/sfx/
+template/public/fonts/
+*.mp4
+*.mp3
+*.wav
+!template/public/audio/demo-bed.wav
+.DS_Store
+npm-debug.log*
+template/src/vendor/
