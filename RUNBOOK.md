@@ -16,7 +16,7 @@ finished reel comes out the other end: 1080x1920, 200fps container, H.264+AAC, u
 المؤثرات (438 ملف CC0). آمن يتعاد تشغيله. البيئة بتمسح /home بين الجلسات، فالستوديو كله
 عايش تحت /downloads (أو جوه الريبو لو رفعته) — لو لقيت حاجة ناقصة: شغّل INSTALL تاني.
 
-One command installs everything (deps, vendored modules, Tajawal, the SFX pack).
+One command installs everything (deps, vendored modules, Cairo + Tajawal + alternates, the SFX pack).
 Idempotent — re-run it whenever the environment was wiped.
 
 ---
@@ -225,3 +225,46 @@ then the QA gate and a human eyeball pass on extracted frames. The gate fails = 
 - **الفيديو أكبر من 14 ميجا**: render-reel بيعمل 2-pass لوحده؛ لو لسه، قلل CRF للصورة أو مدة.
 - **@remotion/motion-blur مش شغال في بيئة جديدة**: طبّق fallback في سكشن 4 وسجّلها.
 - **مكتبة SFX ناقصة**: `./INSTALL.sh` بيكلونها تاني.
+
+---
+
+## 3D — ستايل ثري دي | The "3d" style
+
+`StyleName` = `'3d'` في `template/src/styles.ts` (طاقة البوب: بنفسجي/وردي/أصفر، بس بعمق حقيقي).
+الأدوات في `vendor/reel-studio/kits/depth3d.tsx` (CSS 3D بس، من غير WebGL، offline، كل حاجة دالة في الفريم):
+
+- `Stage3D`: مشهد بمنظور وكاميرا بتدور ببطء + push-in. أي حاجة جواه بتاخد parallax تلقائي.
+- `Layer z`: طبقة على عمق z. `focusZ` + `dof` = بلور عمق الميدان كل ما الطبقة تبعد عن الفوكس.
+- `Slab3D`: كرت بسمك حقيقي (وجه أمامي + جوانب مبثوقة + حافة ضوء).
+- `Cube3D` / `Sphere3D` / `Ring3D`: عناصر طايرة مضاءة.
+- `ContactShadow`: ضل ناعم على الأرض بيكبر ويبهت ويبلر مع الارتفاع.
+- `Text3D`: نص مبثوق بسمك (طبقات text-shadow لنفس الحروف، فالاتصال العربي سليم). ممنوع letter-spacing وممنوع تحريك حرف-حرف.
+
+مثال كامل: `template/src/demo/Demo3D.tsx` (7 مشاهد على توقيتات الفويس أوفر في `timings3d.json`).
+`npx remotion render src/index.ts Demo3D ...` أو `scripts/render-reel.sh Demo3D <frames> out.mp4 --voiceover vo.wav --mix mix.txt`.
+
+Rules: one CameraBlur only on fast entrances (`enabled` window), not on the whole reel (each blurred
+subtree re-renders per sample). Don't wrap flex layouts in WhipPan. Keep captions in the bottom safe area.
+
+English: depth kit = perspective stage with orbiting camera, z-layers with DOF blur, extruded slabs,
+lit cubes/spheres/rings, contact shadows, extruded Arabic text. Pure CSS 3D, deterministic per frame.
+
+---
+
+## الخطوط والتايبوجرافي العربي | Arabic typography
+
+الافتراضي دلوقتي **Cairo** (OFL، variable 200-1000) بدل Tajawal: وزن Black حقيقي للعناوين، تطويل (كشيدة) بيتوصل
+نضيف، وتشكيل متراص صح (فتحة/ضمة/شدة فوق وتحت من غير ما تتداخل). Tajawal فاضل fallback.
+الكود: `template/src/fonts.tsx` (`<Fonts/>` بيحمّل الخطوط ويقفل الريندر لحد ما تتفك، و`ARABIC_FONT`).
+`TajawalCaptions` بياخد `fontFamily` و`fontWeight` (الافتراضي Cairo 900).
+
+اللي اتغيّر عشان الشكل يطلع أحسن في الفيديو:
+- `font-feature-settings: ccmp, locl, calt, liga, rlig, mark, mkmk, kern` شغّالة (التشكيل والربط السياقي).
+- `text-rendering: geometricPrecision` + `font-kerning: normal`، وارتفاع سطر 1.45 للكابشن عشان التشكيل يلاقي مكان.
+- الكشيدة (`stretchWord`) بتتحط قبل علامات التشكيل مش بينها، متجربة على مُحَمَّدٌ / الْكَلِمَةَ / كَتَبَ.
+- بدائل متنزلة بـ INSTALL: IBM Plex Sans Arabic Bold (`ARABIC_FONTS.plex`) للنص الرسمي، وAlmarai ExtraBold (`ARABIC_FONTS.almarai`).
+  اتقارنوا على نفس الجمل: Cairo أقوى في العناوين والكابشن، Plex أهدى للفقرات، Almarai نضيف لكن أضيق.
+
+English: default face is now Cairo (variable, true Black weight, clean tatweel, correct tashkeel stacking), with
+Tajawal as fallback; OpenType Arabic features (ccmp/calt/liga/mark/mkmk) and geometricPrecision rendering are on;
+captions get 1.45 line height for diacritics; Plex Sans Arabic and Almarai are installed as alternates.

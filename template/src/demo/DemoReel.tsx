@@ -14,27 +14,8 @@ import {Blinds} from '../vendor/reel-studio/core/transitions-v4/blinds';
 import {Grain, Vignette, FlashBloom} from '../vendor/reel-studio/core/transitions';
 import {useBands} from '../vendor/reel-studio/core/audioviz';
 import {TajawalCaptions} from '../captions/TajawalCaptions';
+import {Fonts, ARABIC_FONT} from '../fonts';
 import {STYLES, ACTIVE_STYLE, type StyleName} from '../styles';
-
-const FONT_CSS = `
-@font-face { font-family: 'Tajawal'; src: url('${staticFile('fonts/Tajawal-Regular.ttf')}') format('truetype'); font-weight: 400; }
-@font-face { font-family: 'Tajawal'; src: url('${staticFile('fonts/Tajawal-Bold.ttf')}') format('truetype'); font-weight: 700; }
-@font-face { font-family: 'Tajawal'; src: url('${staticFile('fonts/Tajawal-ExtraBold.ttf')}') format('truetype'); font-weight: 800; }
-`;
-
-const Fonts: React.FC = () => {
-  const [handle] = React.useState(() => delayRender('loading Tajawal'));
-  React.useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = FONT_CSS;
-    document.head.appendChild(style);
-    Promise.all([
-      document.fonts.load("800 64px Tajawal", 'تحوّل'),
-      document.fonts.load("700 64px Tajawal", 'تحوّل'),
-    ]).then(() => continueRender(handle), () => continueRender(handle));
-  }, [handle]);
-  return null;
-};
 
 const LAND = 34; // landing frame of the hero card
 const CUT = 90; // transition frame
@@ -48,12 +29,12 @@ const Card: React.FC<{title: string; sub: string; accent: string; bg: string; bo
       padding: '64px 56px',
       background: bg,
       boxShadow: `0 60px 120px rgba(0,0,0,0.35), inset 0 0 0 2px ${border}`,
-      fontFamily: "'Tajawal', sans-serif",
+      fontFamily: ARABIC_FONT,
       direction: 'rtl',
       textAlign: 'center',
     }}
   >
-    <div style={{color: accent, fontSize: 88, fontWeight: 800, lineHeight: 1.25}}>{title}</div>
+    <div style={{color: accent, fontSize: 88, fontWeight: 900, lineHeight: 1.3}}>{title}</div>
     <div style={{color: subColor, fontSize: 44, fontWeight: 700, marginTop: 18}}>{sub}</div>
   </div>
 );

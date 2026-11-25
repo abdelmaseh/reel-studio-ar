@@ -16,7 +16,7 @@ Remotion 4. One command installs everything; one script renders end to end.
 - **8 curated transitions** ported from reel-studio's transitions-v4: page-turn
   (Arabic-book direction), ink-slab, lens-zoom, iris, dot-zoom, zoom-through, blinds,
   plus whip-pan with built-in speed-based blur and a light-scan sheen.
-- **5 named visual styles** (`cinematic`, `gold`, `minimal`, `pop`, `vhs`) — each sets
+- **6 named visual styles** (`cinematic`, `gold`, `minimal`, `pop`, `vhs`, `3d`; the new `3d` keeps pop energy with real depth: perspective, parallax layers, contact shadows, DOF blur, extruded text; see RUNBOOK section 3D and `Demo3D`) — each sets
   palette, caption treatment, default transition, grain/vignette and SFX flavor.
   Switch a whole reel with one constant.
 - **108-move catalog** with energy/family/cue metadata and a planner discipline

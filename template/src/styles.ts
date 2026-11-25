@@ -3,7 +3,7 @@
 // these five presets are our own, tuned for Arabic ad reels.
 import type {CaptionWord} from './captions/TajawalCaptions';
 
-export type StyleName = 'cinematic' | 'gold' | 'minimal' | 'pop' | 'vhs';
+export type StyleName = 'cinematic' | 'gold' | 'minimal' | 'pop' | 'vhs' | '3d';
 
 export type ReelStyle = {
   /** one-line Arabic description for the runbook */
@@ -93,6 +93,21 @@ export const STYLES: Record<StyleName, ReelStyle> = {
     grain: 0.03,
     vignette: 0.22,
     sfx: {impact: 'ding_3', whoosh: 'whoosh_fast_1', sting: 'bell_small_1', note: 'ووشات سريعة ودينجز مرحة على الإيقاع'},
+  },
+  '3d': {
+    ar: 'ثري دي احترافي — طاقة البوب بس بعمق حقيقي: منظور، طبقات parallax، ضلال ناعمة، عناصر طايرة وبلور عمق، ونص بسمك',
+    bg1: 'radial-gradient(110% 80% at 50% 35%, #8A63FF 0%, #5B33E6 45%, #2A136F 100%)',
+    bg2: 'radial-gradient(110% 80% at 50% 65%, #FF6A9A 0%, #B13DD6 45%, #3A1580 100%)',
+    accent: '#FFD34D',
+    accent2: '#64E4FF',
+    cardBg: 'linear-gradient(160deg, #FFFFFF 0%, #E9E2FF 100%)',
+    cardBorder: 'rgba(255,255,255,0.5)',
+    cardSub: 'rgba(34,18,77,0.75)',
+    captions: {color: '#FFFFFF', activeColor: '#FFD34D', dimColor: 'rgba(255,255,255,0.5)', activePill: 'rgba(42,19,111,0.75)', kashida: 1},
+    transition: 'dot-zoom',
+    grain: 0.03,
+    vignette: 0.3,
+    sfx: {impact: 'ding_3', whoosh: 'whoosh_fast_1', sting: 'bell_small_1', note: 'ووشات سريعة + ضربات خفيفة مع كل دخول 3D'},
   },
   vhs: {
     ar: 'جريتي VHS/بروتاليست — للهوك وأول ثانيتين، شكل خام متعمد',

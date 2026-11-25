@@ -3,6 +3,7 @@
 // joining slots (never after ا د ر ز و ة ..., never inside lam-alef, never at word edges).
 import React from 'react';
 import {AbsoluteFill, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {ARABIC_FONT, ARABIC_FEATURES} from '../fonts';
 import {stretchWord} from '../vendor/reel-studio/arabic/kashida.ts';
 
 export type CaptionWord = {
@@ -26,6 +27,10 @@ export type TajawalCaptionsProps = {
   /** distance from the bottom edge in px (keep clear of platform UI: >= 350) */
   bottom?: number;
   maxWidth?: number;
+  /** CSS font-family (must be loaded by the composition); default Cairo (Tajawal fallback). See src/fonts.ts */
+  fontFamily?: string;
+  /** weight for the caption face (Cairo supports up to 900) */
+  fontWeight?: number;
 };
 
 export const TajawalCaptions: React.FC<TajawalCaptionsProps> = ({
@@ -38,6 +43,8 @@ export const TajawalCaptions: React.FC<TajawalCaptionsProps> = ({
   activePill = 'rgba(0,0,0,0.45)',
   bottom = 420,
   maxWidth = 920,
+  fontFamily = ARABIC_FONT,
+  fontWeight = 900,
 }) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -58,10 +65,14 @@ export const TajawalCaptions: React.FC<TajawalCaptionsProps> = ({
           justifyContent: 'center',
           columnGap: fontSize * 0.28,
           rowGap: fontSize * 0.18,
-          fontFamily: "'Tajawal', sans-serif",
-          fontWeight: 800,
+          fontFamily,
+          fontWeight,
+          fontFeatureSettings: ARABIC_FEATURES,
+          fontKerning: 'normal',
+          textRendering: 'geometricPrecision',
+          WebkitFontSmoothing: 'antialiased',
           fontSize,
-          lineHeight: 1.35,
+          lineHeight: 1.45, // room for stacked tashkeel above/below
           textAlign: 'center',
         }}
       >
