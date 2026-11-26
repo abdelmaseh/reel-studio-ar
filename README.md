@@ -1,41 +1,120 @@
-# Reel Studio استوديو الريل
+<div dir="rtl" align="center">
 
-A complete, batteries-included pipeline for producing premium vertical Arabic ad reels
-(1080x1920, 60fps delivery container, H.264+AAC, WhatsApp-ready under 14 MB) with
-Remotion 4. One command installs everything; one script renders end to end.
+<img src="docs/img/banner.png" alt="si7a Reel Studio - استوديو الريل" width="100%">
 
-## Features
+<br>
 
-- **Real motion blur** via `@remotion/motion-blur` (`CameraBlur`, `Smear`) with shutter
-  presets — no more render-at-4x-fps oversampling. A documented 50fps × 4-subframe
-  fallback stays in the runbook.
-- **Arabic done right**: Tajawal per-word RTL captions driven by Whisper word timings,
-  with a real kashida (tatweel) engine that only stretches legal joining slots, plus a
-  lint gate that blocks delivery on broken shaping (split joins, presentation forms,
-  tatweel at word edges, ZWJ inside words).
-- **8 curated transitions** ported from reel-studio's transitions-v4: page-turn
-  (Arabic-book direction), ink-slab, lens-zoom, iris, dot-zoom, zoom-through, blinds,
-  plus whip-pan with built-in speed-based blur and a light-scan sheen.
-- **6 named visual styles** (`cinematic`, `gold`, `minimal`, `pop`, `vhs`, `3d`; the new `3d` keeps pop energy with real depth: perspective, parallax layers, contact shadows, DOF blur, extruded text; see RUNBOOK section 3D and `Demo3D`) — each sets
-  palette, caption treatment, default transition, grain/vignette and SFX flavor.
-  Switch a whole reel with one constant.
-- **108-move catalog** with energy/family/cue metadata and a planner discipline
-  (3 core moves + accents per video) adapted from video-ad-editor.
-- **408-sound CC0 SFX pack** with a searchable catalog.
-- **B-roll fetcher**: `broll-fetch.mjs` searches and downloads free stock clips
-  (Coverr keyless by default; Mixkit; Pexels/Pixabay with free API keys) and writes a
-  license manifest per clip.
-- **Audio-reactive graphics**: band/energy/ducking/onset analysis hooks (`audioviz.ts`).
-- **Delivery QA gate**: container spec, full decode, black/freeze-frame detection,
-  audio peak level, and the Arabic caption lint. The gate fails, the reel doesn't ship.
+<a href="https://github.com/abdelmaseh/reel-studio-ar"><img src="docs/img/btn-star.png" alt="Star on GitHub" height="48"></a> <a href="https://t.me/abdelmasehrefaat"><img src="docs/img/btn-telegram.png" alt="Telegram" height="48"></a> <a href="https://instagram.com/si7a_ref3t_"><img src="docs/img/btn-instagram.png" alt="Instagram" height="48"></a>
 
-## Quickstart
+<br><br>
+
+**استوديو متكامل لإنتاج ريلز إعلانية عربية بجودة بريميوم، بأمر واحد.**
+<br>
+*A complete, batteries-included pipeline for premium vertical Arabic ad reels.*
+
+`1080x1920` · `60fps delivery` · `H.264 + AAC` · `WhatsApp-ready under 14 MB` · `Remotion 4`
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## ✨ المميزات | Capabilities
+
+</div>
+
+<div align="center">
+
+<img src="docs/img/card-blur.png" alt="Real motion blur" width="32%">
+<img src="docs/img/card-arabic.png" alt="Arabic done right" width="32%">
+<img src="docs/img/card-trans.png" alt="8 transitions" width="32%">
+<img src="docs/img/card-styles.png" alt="6 visual styles" width="32%">
+<img src="docs/img/card-sfx.png" alt="408 SFX and B-roll" width="32%">
+<img src="docs/img/card-qa.png" alt="Delivery QA gate" width="32%">
+
+</div>
+
+<div dir="ltr">
+
+| | الميزة / Feature | التفاصيل / Details |
+|:-:|---|---|
+| 🎥 | **Real motion blur** | `@remotion/motion-blur` (`CameraBlur`, `Smear`) with shutter presets. No more render-at-4x-fps oversampling. A documented 50fps × 4-subframe fallback stays in the runbook. |
+| 🔤 | **Arabic done right** | Tajawal per-word RTL captions driven by Whisper word timings, with a real kashida (tatweel) engine that only stretches legal joining slots, plus a lint gate that blocks delivery on broken shaping (split joins, presentation forms, tatweel at word edges, ZWJ inside words). |
+| 🎞️ | **8 curated transitions** | Ported from reel-studio's transitions-v4: page-turn (Arabic-book direction), ink-slab, lens-zoom, iris, dot-zoom, zoom-through, blinds, plus whip-pan with built-in speed-based blur and a light-scan sheen. |
+| 🎨 | **6 named visual styles** | `cinematic`, `gold`, `minimal`, `pop`, `vhs`, `3d`. Each sets palette, caption treatment, default transition, grain/vignette and SFX flavor. Switch a whole reel with one constant. The `3d` style keeps pop energy with real depth: perspective, parallax layers, contact shadows, DOF blur, extruded text (see RUNBOOK section 3D and `Demo3D`). |
+| 🧭 | **108-move catalog** | Energy/family/cue metadata and a planner discipline (3 core moves + accents per video), adapted from video-ad-editor. |
+| 🔊 | **408-sound CC0 SFX pack** | With a searchable catalog. |
+| 📹 | **B-roll fetcher** | `broll-fetch.mjs` searches and downloads free stock clips (Coverr keyless by default; Mixkit; Pexels/Pixabay with free API keys) and writes a license manifest per clip. |
+| 📈 | **Audio-reactive graphics** | Band/energy/ducking/onset analysis hooks (`audioviz.ts`). |
+| ✅ | **Delivery QA gate** | Container spec, full decode, black/freeze-frame detection, audio peak level, and the Arabic caption lint. The gate fails, the reel doesn't ship. |
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## 🖼️ معاينة من الريندر | Real render previews
+
+</div>
+
+<div dir="ltr">
+
+*Frames rendered straight from this repo's `Demo` and `Demo3D` compositions.*
+
+</div>
+
+<div align="center">
+
+| Title card | Captions + kashida | 3D hook | 3D title |
+|:-:|:-:|:-:|:-:|
+| <img src="docs/img/shot-title.jpg" width="200" alt="Title card frame"> | <img src="docs/img/shot-captions.jpg" width="200" alt="Captions frame"> | <img src="docs/img/shot-3d-hook.jpg" width="200" alt="3D hook frame"> | <img src="docs/img/shot-3d-title.jpg" width="200" alt="3D title frame"> |
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## 🎨 معرض الستايلات | Style gallery
+
+</div>
+
+<div align="center">
+
+| `cinematic` | `gold` | `minimal` | `pop` | `vhs` | `3d` |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| <img src="docs/img/style-cinematic.jpg" width="130" alt="cinematic style"> | <img src="docs/img/style-gold.jpg" width="130" alt="gold style"> | <img src="docs/img/style-minimal.jpg" width="130" alt="minimal style"> | <img src="docs/img/style-pop.jpg" width="130" alt="pop style"> | <img src="docs/img/style-vhs.jpg" width="130" alt="vhs style"> | <img src="docs/img/style-3d.jpg" width="130" alt="3d style"> |
+| dark teal, default | luxury gold | clean light | loud pop | gritty VHS | real depth |
+
+</div>
+
+<div dir="ltr">
+
+Set it once in `template/src/styles.ts` (`ACTIVE_STYLE`) or per composition via `defaultProps: {styleName: 'gold'}`.
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## 🚀 التثبيت السريع | Quickstart
+
+</div>
+
+<div dir="ltr">
 
 **Requirements:** Node.js 22.18+ (24 LTS is fine; the QA gate runs TypeScript natively), Git, curl. On Windows use **Git Bash**
 (`winget install OpenJS.NodeJS.LTS` and `winget install Git.Git`). `INSTALL.sh` checks them first and
 tells you exactly what is missing. **ffmpeg/ffprobe are installed automatically** into `tools/ffmpeg/bin`
 inside the repo if they are not already on your PATH (no admin rights, no PATH edits;
 `render-reel.sh` and `qa-gate.mjs` use that local copy first). macOS: `brew install ffmpeg`.
+
+</div>
+
+<div dir="ltr">
 
 ```bash
 ./INSTALL.sh                      # one-command setup (node modules, fonts, SFX, vendor copy)
@@ -45,69 +124,123 @@ bash scripts/render-reel.sh Demo 250 out.mp4        # silent demo; add --voiceov
 node scripts/qa-gate.mjs out.mp4
 ```
 
-Then read **RUNBOOK.md** — it is the full production manual (Egyptian Arabic + English):
+</div>
+
+<div dir="ltr">
+
+Delivery container is **60fps by default**; pass `--fps` to override.
+Then read **[RUNBOOK.md](RUNBOOK.md)**, the full production manual (Egyptian Arabic + English):
 shot list discipline, physics rules, caption gate, B-roll workflow, QA, compression.
 
-## Style gallery
+</div>
 
-| `cinematic` | `gold` | `minimal` | `pop` | `vhs` |
-|---|---|---|---|---|
-| dark teal/orange, our default premium look | luxury gold on black | clean light minimal | loud pop colors | gritty VHS/brutalist hooks |
+---
 
-Set it once in `template/src/styles.ts` (`ACTIVE_STYLE`) or per composition via
-`defaultProps: {styleName: 'gold'}`.
+<div dir="rtl">
 
-## Layout
+## ❓ أسئلة شائعة | FAQ
+
+</div>
+
+<div dir="ltr">
+
+<details>
+<summary><b>إيه المطلوب عشان أشغّله؟ | What do I need installed?</b></summary>
+
+<br>
+
+Node.js 22.18+, Git and curl. `INSTALL.sh` checks all three and prints the exact fix for anything missing. ffmpeg and ffprobe are downloaded locally into `tools/ffmpeg/bin` if you don't have them (on macOS use `brew install ffmpeg`).
+
+</details>
+
+<details>
+<summary><b>أغيّر الستايل إزاي؟ | How do I switch the style?</b></summary>
+
+<br>
+
+Change `ACTIVE_STYLE` in `template/src/styles.ts`, or set `defaultProps: {styleName: 'gold'}` on a single composition. Palette, captions, transition, grain and SFX flavor all follow.
+
+</details>
+
+<details>
+<summary><b>الفيديو ما عدّاش بوابة الجودة؟ | The QA gate failed, what now?</b></summary>
+
+<br>
+
+That is by design. `node scripts/qa-gate.mjs out.mp4` reports which check failed (container spec, decode, black/freeze frames, audio peak or Arabic caption lint). Fix it and render again. The RUNBOOK covers each case.
+
+</details>
+
+<details>
+<summary><b>اللقطات والمؤثرات مرخصة؟ | Are the B-roll clips and SFX licensed?</b></summary>
+
+<br>
+
+The SFX pack is CC0. `broll-fetch.mjs` writes a license manifest next to every downloaded clip so you can check terms before shipping.
+
+</details>
+
+<details>
+<summary><b>الكابشن العربي بيتكسر؟ | Will Arabic captions break?</b></summary>
+
+<br>
+
+The kashida engine only stretches legal joining slots, and the lint gate blocks delivery on split joins, presentation forms, tatweel at word edges and ZWJ inside words.
+
+</details>
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## 📁 هيكل المشروع | Layout
+
+</div>
+
+<div dir="ltr">
 
 ```
 INSTALL.sh            one-command setup, safe to re-run
 RUNBOOK.md            production manual (AR + EN)
 README.md             this file
 LICENSE / ATTRIBUTION.md / LICENSES/
+docs/                 README images (banner, buttons, cards, render previews)
 vendor/               ported modules with their license headers (see ATTRIBUTION.md)
 template/             the Remotion project (src/, scripts/, public/)
 assets/sfx/           CC0 sound pack (cloned by INSTALL.sh)
 ```
 
-## About the author
+</div>
 
-<p align="center"><img src="docs/author.jpg" alt="Siha Refaat" width="160" style="border-radius:50%"></p>
+---
 
-**Siha Refaat**, builder of Reel Studio. I make tools that turn a single word into a finished, cinematic Arabic reel.
+<div align="center">
 
-- Telegram: [t.me/abdelmasehrefaat](https://t.me/abdelmasehrefaat)
-- Instagram: [@si7a_ref3t_](https://instagram.com/si7a_ref3t_)
+## 👤 عن المؤلف | About si7a
 
-Questions, ideas or a shout-out are welcome on either account.
+<img src="docs/author.jpg" alt="Siha Refaat - si7a" width="140">
+
+**Siha Refaat (si7a)**, builder of Reel Studio.
+بعمل أدوات بتحوّل كلمة واحدة لريل عربي سينمائي كامل.
+*I make tools that turn a single word into a finished, cinematic Arabic reel.*
+
+<a href="https://t.me/abdelmasehrefaat"><img src="docs/img/btn-telegram.png" alt="Telegram" height="44"></a> <a href="https://instagram.com/si7a_ref3t_"><img src="docs/img/btn-instagram.png" alt="Instagram" height="44"></a>
+
+Telegram: [t.me/abdelmasehrefaat](https://t.me/abdelmasehrefaat) · Instagram: [@si7a_ref3t_](https://instagram.com/si7a_ref3t_)
+
+لو عندك فكرة أو سؤال أو جربت الاستوديو، كلمني على أي حساب فيهم.
+
+</div>
 
 ---
 
 ## Credits
 
-Built on the shoulders of three open projects — see ATTRIBUTION.md for the full notices:
-[mohamedabdou-ai/reel-studio](https://github.com/mohamedabdou-ai/reel-studio) (Apache-2.0),
+Built on the shoulders of three open projects. See [ATTRIBUTION.md](ATTRIBUTION.md) for the full notices:
+[mohamedabdou-ai/reel-studio](https://github.com/mohamedabdou-ai/reel-studio) (Apache-2.0; the ported transitions come from its transitions-v4),
 [majedphotos/video-ad-editor](https://github.com/majedphotos/video-ad-editor) (MIT),
 [Reodelbasalan/adbertiser-sfx](https://github.com/Reodelbasalan/adbertiser-sfx) (CC0),
 plus the cinematic-motion craft references. Tajawal font (OFL). Remotion (remotion.dev).
-
----
-
-## بالعربي
-
-استوديو متكامل لإنتاج ريلز إعلانية عربية بجودة بريميوم (1080x1920، كونتينر 200 فريم،
-أقل من 14 ميجا للواتساب). التثبيت أمر واحد `./INSTALL.sh`، والإنتاج كله موثّق خطوة
-بخطوة في RUNBOOK.md: بلور حقيقي، كابشن عربي بالكشيدة على توقيتات Whisper، ٨ انتقالات،
-٥ ستايلات جاهزة تتبدل بسطر واحد، مكتبة ٤٠٨ مؤثر صوتي، سكريبت سحب لقطات B-roll مجانية
-بالترخيص، وبوابة فحص جودة ما تعدّيش التسليم لو فيه حاجة بايظة.
-
-
-## عن المؤلف
-
-<p align="center"><img src="docs/author.jpg" alt="صيحة رفعت" width="160"></p>
-
-**Siha Refaat**، صاحب مشروع Reel Studio. بعمل أدوات بتحوّل كلمة واحدة لريل عربي سينمائي كامل.
-
-- تيليجرام: [t.me/abdelmasehrefaat](https://t.me/abdelmasehrefaat)
-- إنستجرام: [@si7a_ref3t_](https://instagram.com/si7a_ref3t_)
-
-لو عندك فكرة أو سؤال أو جربت الاستوديو، كلمني على أي حساب فيهم.
+Images in `docs/img/` are original to this repo and were rendered from it.
