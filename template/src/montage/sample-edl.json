@@ -1,0 +1,50 @@
+{
+ "clips": [
+  {
+   "src": "montage-sample/clip1.mp4",
+   "in": 0,
+   "dur": 1.05,
+   "transition": "cut",
+   "push": 0.05
+  },
+  {
+   "src": "montage-sample/clip2.mp4",
+   "in": 0,
+   "dur": 1,
+   "transition": "whip",
+   "push": 0.05
+  },
+  {
+   "src": "montage-sample/clip3.mp4",
+   "in": 0,
+   "dur": 1,
+   "transition": "cut",
+   "push": 0.05
+  },
+  {
+   "src": "montage-sample/clip1.mp4",
+   "in": 0,
+   "dur": 1,
+   "transition": "zoom",
+   "push": 0.05
+  },
+  {
+   "src": "montage-sample/clip2.mp4",
+   "in": 0,
+   "dur": 1,
+   "transition": "flash",
+   "push": 0.05
+  },
+  {
+   "src": "montage-sample/clip3.mp4",
+   "in": 0,
+   "dur": 0.95,
+   "transition": "cut",
+   "push": 0.05
+  }
+ ],
+ "music": {
+  "src": "montage-sample/bed-120bpm.wav",
+  "volume": 0.45
+ }
+}

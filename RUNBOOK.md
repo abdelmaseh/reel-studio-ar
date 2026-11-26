@@ -272,3 +272,20 @@ lit cubes/spheres/rings, contact shadows, extruded Arabic text. Pure CSS 3D, det
 English: default face is now Cairo (variable, true Black weight, clean tatweel, correct tashkeel stacking), with
 Tajawal as fallback; OpenType Arabic features (ccmp/calt/liga/mark/mkmk) and geometricPrecision rendering are on;
 captions get 1.45 line height for diacritics; Plex Sans Arabic and Almarai are installed as alternates.
+
+
+---
+
+## المونتاج | Montage toolkit (جديد)
+
+أدوات مونتاج بجانب الموشن جرافيكس:
+
+- `npm run beats -- music.mp3 --out beats.json` يكتشف الـ BPM والـ beats.
+- `node scripts/montage/cut-points.mjs voice.wav --out sil.json` نقاط قص في سكتات الكلام (مفيش قص في نص كلمة).
+- `node scripts/montage/snap-cuts.mjs cuts.json --beats beats.json --silences sil.json` يسحب القصات على الـ beat أو السكتة.
+- `npm run montage:plan -- --clips a.mp4 b.mp4 --beats beats.json --every 2 --seconds 20 --music song.mp3 --out src/montage/sample-edl.json` يعمل EDL مقصوص على الـ beat.
+- كومب `Montage` في Remotion بيقرا الـ EDL: قصات، انتقالات (flash / whip / zoom)، push-in مستمر، speed، J-cut.
+- بوابة الـ QA بقت فيها فحص إيقاع: لقطة أطول من 4.5 ثانية، أو الهوك متأخر (أول تغيير بعد ثانيتين) = needs-review.
+- اختبار ذاتي: `npm run montage:selftest`.
+
+Beat detection, speech-silence cut points, cut snapping, an EDL-driven Remotion `Montage` composition (cuts, flash/whip/zoom transitions, constant push-in, speed, J-cuts), and a pacing lint in the QA gate (shot length, late hook). Self-test: `npm run montage:selftest`.

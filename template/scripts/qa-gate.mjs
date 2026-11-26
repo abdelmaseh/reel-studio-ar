@@ -4,6 +4,7 @@
 // vendored reel-studio arabic module (Apache-2.0, https://github.com/mohamedabdou-ai/reel-studio).
 //
 // Usage: node scripts/qa-gate.mjs <file.mp4> [--captions captions.json] [--max-mb 14]
+//          [--max-shot-sec 4.5] [--hook-by-sec 2.0] [--scene-th 0.25] [--no-pacing]  (pacing lint)
 //          [--min-word-sec 0.12] [--max-words-per-sec 4.5]  (caption timing lint)
 //          [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]
 // Exit 1 on any FAIL. needs-review items print but never block.
@@ -70,6 +71,22 @@ if (blackHits.length) fail('black-frames', blackHits.map((m) => `${m[1]}-${m[2]}
 const frz = run('ffmpeg', ['-i', file, '-vf', 'freezedetect=n=0.001:d=1.2', '-an', '-f', 'null', '-']);
 const frzHits = [...frz.matchAll(/freeze_start: ([\d.]+)/g)];
 if (frzHits.length) review('freeze-frames', `frozen >= 1.2s at ${frzHits.map((m) => m[1]).join(', ')}s`); else pass('freeze-frames', 'none');
+
+
+// ---- 3b. pacing lint (shot length / hook) — needs-review only, never blocks ----
+if (v && !has('no-pacing')) {
+  const maxShot = Number(opt('max-shot-sec', 4.5)); const hookBy = Number(opt('hook-by-sec', 2.0));
+  const sc = run('ffmpeg', ['-i', file, '-vf', `select='gt(scene,${opt('scene-th', 0.25)})',showinfo`, '-an', '-f', 'null', '-']);
+  const cuts = [...sc.matchAll(/pts_time:([\d.]+)/g)].map((m) => Number(m[1]));
+  const dur = Number(fmt.duration ?? 0);
+  const edges = [0, ...cuts, dur].filter((x, i, arr) => i === 0 || x > arr[i - 1]);
+  const shots = edges.slice(1).map((e, i) => +(e - edges[i]).toFixed(2));
+  const longShots = shots.map((d, i) => ({d, at: edges[i]})).filter((x) => x.d > maxShot);
+  const avg = shots.length ? dur / shots.length : 0;
+  if (longShots.length) review('pacing-long-shot', `${longShots.length} shot(s) longer than ${maxShot}s: ${longShots.slice(0, 4).map((x) => `${x.d}s at ${x.at.toFixed(1)}s`).join(', ')} — add a cut, push-in or new beat`);
+  else pass('pacing-shots', `${shots.length} shots, longest ${Math.max(0, ...shots)}s, avg ${avg.toFixed(1)}s`);
+  if (dur > 6 && (cuts[0] ?? dur) > hookBy) review('pacing-late-hook', `first cut/change at ${(cuts[0] ?? dur).toFixed(1)}s — reels need a visual change by ${hookBy}s`);
+}
 
 // ---- 4. audio level ----
 if (a) {

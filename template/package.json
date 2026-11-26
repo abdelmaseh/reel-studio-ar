@@ -9,6 +9,9 @@
     "still": "remotion still src/index.ts",
     "qa": "node scripts/qa-gate.mjs",
     "qa:selftest": "bash scripts/qa-selftest.sh",
+    "montage:selftest": "bash scripts/montage/selftest.sh",
+    "beats": "node scripts/montage/beats.mjs",
+    "montage:plan": "node scripts/montage/plan-edl.mjs",
     "broll": "node scripts/broll-fetch.mjs"
   },
   "dependencies": {
