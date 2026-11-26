@@ -103,3 +103,35 @@ export const Broll3D: React.FC<BrollProps> = ({kind, text, sub, items = []}) => 
     </AbsoluteFill>
   );
 };
+
+/* ---------- Callout3D: light, transparent 3D graphics for the top band (never over the face) ----------
+ * kinds: headline (hook question), num (big stat), chips (up to 3 terms in a row). Band centre ~ y=235px of 1920. */
+export type CalloutProps = {kind: 'headline' | 'num' | 'chips'; text: string; items?: string[]};
+export const Callout3D: React.FC<CalloutProps> = ({kind, text, items = []}) => {
+  const f = useCurrentFrame(); const {fps} = useVideoConfig();
+  const sp = (d: number) => spring({frame: f - d, fps, config: {damping: 13, stiffness: 150, mass: 0.8}});
+  const p = sp(0);
+  return (
+    <Stage3D orbitX={3} orbitY={7} speed={0.25} push={0} durF={1}>
+      {(kind === 'headline' || kind === 'num') && (
+        <Layer z={60} y={-700}><C>
+          <div style={{transformStyle: 'preserve-3d', transform: `translateZ(${(1 - p) * -700}px) rotateX(${(1 - p) * -60}deg) scale(${0.97 + Math.sin(f / 14) * 0.015})`, opacity: Math.min(1, p * 2.2)}}>
+            <Text3D text={text} size={kind === 'num' ? 190 : 118} face={kind === 'num' ? PAL.gold : '#FFFFFF'} side={PAL.goldDeep} depth={kind === 'num' ? 40 : 24} angle={72} style={{position: 'absolute', left: -520, width: 1040, top: kind === 'num' ? -150 : -90}} />
+          </div>
+        </C></Layer>
+      )}
+      {kind === 'chips' && items.slice(0, 3).map((t, i) => {
+        const pi = sp(i * 6);
+        return (
+          <Layer key={i} z={40} x={(1 - i) * 345} y={-705}><C>
+            <div style={{transformStyle: 'preserve-3d', transform: `translateY(${(1 - pi) * -160}px) rotateX(${(1 - pi) * 70}deg) rotateY(${(1 - i) * -9}deg)`, opacity: Math.min(1, pi * 2)}}>
+              <Slab3D w={320} h={112} depth={26} radius={34} front="linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.08))" side={i % 2 ? PAL.goldDeep : PAL.tealDeep} border="rgba(255,255,255,0.55)">
+                <div style={{fontFamily: ARABIC_FONT, fontWeight: 900, fontSize: 46, color: '#fff', direction: 'rtl', textShadow: '0 3px 10px rgba(0,0,0,0.6)'}}>{t}</div>
+              </Slab3D>
+            </div>
+          </C></Layer>
+        );
+      })}
+    </Stage3D>
+  );
+};

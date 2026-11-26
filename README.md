@@ -51,6 +51,32 @@
 
 </div>
 
+
+---
+
+<div dir="rtl">
+
+## 🆕 التحديث الجديد | What's new: Montage toolkit, 3D B-roll, subject isolation, style pack
+
+</div>
+
+<div align="center">
+
+<img src="docs/img/styles/style-1.jpg" alt="كابشن هورموزي" width="19%"> <img src="docs/img/styles/style-2.jpg" alt="ميستر بيست" width="19%"> <img src="docs/img/styles/style-3.jpg" alt="كاريوكي" width="19%"> <img src="docs/img/styles/style-4.jpg" alt="وثائقي" width="19%"> <img src="docs/img/styles/style-5.jpg" alt="كليب بودكاست" width="19%"> <img src="docs/img/styles/style-6.jpg" alt="تايبوجرافي متحرك" width="19%"> <img src="docs/img/styles/style-7.jpg" alt="شاشة منقسمة" width="19%"> <img src="docs/img/styles/style-8.jpg" alt="هوك + شريط تقدم" width="19%"> <img src="docs/img/styles/style-9.jpg" alt="جرافيك 3D" width="19%"> <img src="docs/img/styles/style-10.jpg" alt="تلوين سينمائي" width="19%"> 
+
+</div>
+
+| Feature | What it does | Where |
+|---|---|---|
+| **Montage toolkit** | beat detection, silence cut points, cut snapping, beat-synced EDL planner, pacing QA lint | `template/src/montage/` |
+| **3D B-roll (Broll3D)** | CSS-3D headline/number/chip callouts in the top band, never over the face | `template/src/broll3d/` |
+| **Punch captions (Hormozi style)** | 1-3 words, Cairo 900, thick outline, one accent word, word-level timing | `template/src/captions/PunchCaptions.tsx` |
+| **Subject isolation / text behind subject** | person cutout PNG sequence + 3D text between room and person via the `behind` clip field | `scripts/subject_matte.py`, `Montage.tsx` |
+| **Style pack** | 10 style looks (`StyleFrame` composition, id 1..10): Hormozi, MrBeast, karaoke, documentary, podcast clip, kinetic typography, split screen (on request), hook + progress bar, 3D callouts, cinematic grade | `template/src/styleboard/`, `docs/STYLES.md` |
+| **Progress bar, varied punch-ins, SFX placement** | retention elements from the pro talking-head style guide | `Montage.tsx`, `docs/STYLES.md` |
+
+Notes: the style images above are in-studio renders of each look (not screenshots of real creators). External reference sources for each style are listed in `docs/STYLES.md`. Delivery is 30fps for the 3D-heavy montage composition.
+
 ---
 
 <div dir="rtl">
