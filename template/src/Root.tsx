@@ -23,6 +23,9 @@ export const Root: React.FC = () => (
     <Composition id="Montage" component={Montage} durationInFrames={Math.round(edlSeconds(sampleEdl as any) * FPS)} fps={FPS} width={1080} height={1920}
       defaultProps={{edl: sampleEdl} as MontageProps}
       calculateMetadata={({props}) => ({durationInFrames: Math.max(1, Math.round(edlSeconds(props.edl) * FPS))})} />
+    <Composition id="Montage30" component={Montage} durationInFrames={Math.round(edlSeconds(sampleEdl as any) * 30)} fps={30} width={1080} height={1920}
+      defaultProps={{edl: sampleEdl} as MontageProps}
+      calculateMetadata={({props}) => ({durationInFrames: Math.max(1, Math.round(edlSeconds(props.edl) * 30))})} />
     <Composition id="StyleCard3D" component={StyleCard3D} durationInFrames={1} fps={FPS} width={1080} height={1920} />
   </>
 );
