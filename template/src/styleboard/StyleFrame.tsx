@@ -6,9 +6,10 @@ import {Callout3D} from '../broll3d/Broll3D';
 import {Grain, Vignette} from '../vendor/reel-studio/core/transitions';
 
 const F = {fontFamily: ARABIC_FONT, fontFeatureSettings: ARABIC_FEATURES, direction: 'rtl' as const};
-const doc = staticFile('styles-bg/bg_a.jpg'); const host = staticFile('styles-bg/bg_b.jpg');
+const BG = {doc: staticFile('styles-bg/bg_a.jpg'), host: staticFile('styles-bg/bg_b.jpg')};
+const doc = 'DOC'; const host = 'HOST';
 const stroke = (px: number, c = '#000') => ({WebkitTextStroke: `${px}px ${c}`, paintOrder: 'stroke fill' as const});
-const Bg: React.FC<{src?: string; style?: React.CSSProperties}> = ({src = doc, style}) => <Img src={src} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', ...style}} />;
+const Bg: React.FC<{src?: string; style?: React.CSSProperties}> = ({src = doc, style}) => <Img src={src === 'DOC' ? BG.doc : src === 'HOST' ? BG.host : src} style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', ...style}} />;
 const Words: React.FC<{items: {t: string; c?: string; s?: number; bg?: string; r?: number}[]; size: number; y: number; sw?: number; gap?: number}> = ({items, size, y, sw = 0.15, gap = 0.26}) => (
   <div style={{position: 'absolute', left: 70, right: 70, top: y, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', columnGap: size * gap, ...F, fontWeight: 900, fontSize: size, lineHeight: 1.3}}>
     {items.map((w, i) => <span key={i} style={{display: 'inline-block', color: w.c ?? '#fff', transform: `scale(${w.s ?? 1}) rotate(${w.r ?? 0}deg)`, background: w.bg, padding: w.bg ? `0 ${size * 0.2}px` : undefined, borderRadius: w.bg ? size * 0.25 : undefined, ...(w.bg ? {} : stroke(Math.round(size * sw))), textShadow: w.bg ? undefined : '0 8px 0 rgba(0,0,0,0.35)'}}>{w.t}</span>)}
@@ -65,7 +66,8 @@ const V: Record<string, () => React.ReactElement> = {
     <div style={{position: 'absolute', top: 1500, right: 60, ...F, fontWeight: 900, fontSize: 46, color: '#111', background: '#FFD23F', padding: '4px 22px', borderRadius: 20}}>بعد التلوين</div><Vignette strength={0.45} /><Grain opacity={0.1} /></>),
 };
 const META: Record<string, [string, string]> = {'1': ['كابشن هورموزي', 'Hormozi captions'], '2': ['ستايل ميستر بيست', 'MrBeast pop'], '3': ['كابشن كاريوكي', 'Karaoke highlight'], '4': ['وثائقي سينمائي', 'Documentary + lower third'], '5': ['كليب بودكاست', 'Podcast clip + waveform'], '6': ['تايبوجرافي متحرك', 'Kinetic typography'], '7': ['شاشة منقسمة', 'Split screen'], '8': ['هوك + شريط تقدم', 'Hook + progress bar'], '9': ['جرافيك ثلاثي الأبعاد', '3D callouts'], '10': ['تلوين سينمائي', 'Color grade before/after']};
-export const StyleFrame: React.FC<{id: string}> = ({id}) => {
+export const StyleFrame: React.FC<{id: string; bgDoc?: string; bgHost?: string}> = ({id, bgDoc, bgHost}) => {
+  BG.doc = bgDoc ? staticFile(bgDoc) : staticFile('styles-bg/bg_a.jpg'); BG.host = bgHost ? staticFile(bgHost) : staticFile('styles-bg/bg_b.jpg');
   const [ar, en] = META[id]; const n = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠'][Number(id) - 1];
   return <AbsoluteFill style={{background: '#000'}}><Fonts />{V[id]()}<Label n={n} ar={ar} en={en} /></AbsoluteFill>;
 };

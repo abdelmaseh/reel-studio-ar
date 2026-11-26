@@ -12,3 +12,4 @@ npm-debug.log*
 template/src/vendor/
 tools/
 template/public/interview/
+template/public/explainer/
