@@ -3,6 +3,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Easing, Img, OffthreadVideo, spring, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Broll3D, Callout3D, type BrollProps, type CalloutProps} from '../broll3d/Broll3D';
+import {BeastCaptions} from '../captions/BeastCaptions';
 import {PunchCaptions} from '../captions/PunchCaptions';
 import {TajawalCaptions, type CaptionWord} from '../captions/TajawalCaptions';
 import {Fonts, ARABIC_FONT} from '../fonts';
@@ -23,7 +24,7 @@ export type EdlClip = {
 };
 /** 3D B-roll cutaway over the timeline (picture only: the clips' audio keeps playing underneath). at/dur in timeline seconds. */
 export type Overlay = (BrollProps | CalloutProps) & {at: number; dur: number};
-export type Edl = {clips: EdlClip[]; overlays?: Overlay[]; captions?: CaptionWord[][]; captionStyle?: 'tajawal' | 'punch'; progress?: boolean; music?: {src: string; volume?: number; startFrom?: number}};
+export type Edl = {clips: EdlClip[]; overlays?: Overlay[]; captions?: CaptionWord[][]; captionStyle?: 'tajawal' | 'punch' | 'beast'; grade?: 'cinematic'; progress?: boolean; music?: {src: string; volume?: number; startFrom?: number}};
 export type MontageProps = {edl: Edl; silent?: boolean};
 
 const TR_FRAMES = 8;
@@ -80,6 +81,7 @@ const Caps: React.FC<{chunks: CaptionWord[][]; style?: string}> = ({chunks, styl
   const {fps} = useVideoConfig(); const t = useCurrentFrame() / fps;
   const c = chunks.find((ch) => t >= ch[0].start - 0.03 && t < ch[ch.length - 1].end + 0.12);
   if (c && style === 'punch') return <PunchCaptions words={c} />;
+  if (c && style === 'beast') return <BeastCaptions words={c} />;
   return c ? <TajawalCaptions words={c} kashida={1} bottom={430} fontSize={78} activeColor="#F5C451" /> : null;
 };
 
@@ -99,9 +101,15 @@ export const Montage: React.FC<MontageProps> = ({edl, silent}) => {
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <Fonts />
+      <AbsoluteFill style={edl.grade === 'cinematic' ? {filter: 'contrast(1.14) saturate(1.18) brightness(0.97)'} : undefined}>
       {parts.map(({c, i, start, frames}) => (
         <Sequence key={`v${i}`} from={start} durationInFrames={frames}><ShotView clip={c} frames={frames} /></Sequence>
       ))}
+      </AbsoluteFill>
+      {edl.grade === 'cinematic' ? (<>
+        <AbsoluteFill style={{mixBlendMode: 'soft-light', background: 'linear-gradient(180deg,#0e7c8a 0%,#2a3f66 45%,#ff8a3c 100%)', opacity: 0.6}} />
+        <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%)'}} />
+      </>) : null}
       {(edl.overlays ?? []).map((o, i) => {
         const fr = Math.max(1, Math.round(o.dur * fps));
         return <Sequence key={`o${i}`} from={Math.round(o.at * fps)} durationInFrames={fr}><OverlayView o={o} frames={fr} /></Sequence>;
