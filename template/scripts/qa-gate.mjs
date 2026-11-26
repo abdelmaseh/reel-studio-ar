@@ -16,6 +16,7 @@ import {kashidaSlots} from '../src/vendor/reel-studio/arabic/kashida.ts';
 const args = process.argv.slice(2);
 const file = args[0];
 if (!file) { console.error('usage: qa-gate.mjs <file.mp4> [--captions x.json] [--max-mb 14] [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]'); process.exit(2); }
+if (!existsSync(file)) { console.error(`file not found: ${file}`); process.exit(2); }
 const opt = (name, dflt) => { const i = args.indexOf('--' + name); return i >= 0 ? args[i + 1] : dflt; };
 const has = (name) => args.includes('--' + name);
 const maxMb = Number(opt('max-mb', 14));

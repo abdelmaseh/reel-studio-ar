@@ -28,6 +28,11 @@ for t in node npm git curl; do
 done
 if [ "$MISSING" = 1 ]; then echo "Install the missing tools above, then run ./INSTALL.sh again."; exit 1; fi
 
+# node must run .ts files natively (type stripping, on by default from Node 22.18 / 23.6): qa-gate and the smoke check need it
+if ! node -e 'const [a,b]=process.versions.node.split(".").map(Number);process.exit(a>22||(a===22&&b>=18)?0:1)'; then
+  echo "ERROR: Node $(node -v) is too old. Need Node 22.18+ (or 24 LTS)  ->  $(fix_for node)"; exit 1
+fi
+
 need_ff=""
 for t in ffmpeg ffprobe; do command -v "$t" >/dev/null 2>&1 || need_ff="$need_ff $t"; done
 if [ -n "$need_ff" ]; then
@@ -51,7 +56,7 @@ if [ -n "$need_ff" ]; then
     mac) echo "macOS: run  brew install ffmpeg  then re-run ./INSTALL.sh"; rm -rf "$TMPD"; exit 1;;
   esac
   SRC="$(find "$TMPD/x" -type d -name bin 2>/dev/null | head -1 || true)"
-  if [ -z "$SRC" ]; then SRC="$(dirname "$(find "$TMPD/x" -type f -name 'ffmpeg*' 2>/dev/null | head -1)")"; fi
+  if [ -z "$SRC" ]; then SRC="$(dirname "$(find "$TMPD/x" -type f \( -name ffmpeg -o -name ffmpeg.exe \) 2>/dev/null | head -1)")"; fi
   if [ "$ok" = 1 ] && [ -n "$SRC" ] && [ -d "$SRC" ]; then
     rm -rf "$STUDIO/tools/ffmpeg"; mkdir -p "$LOCAL_BIN"
     cp "$SRC"/ffmpeg* "$SRC"/ffprobe* "$LOCAL_BIN/"; chmod +x "$LOCAL_BIN"/* 2>/dev/null || true
@@ -96,6 +101,6 @@ if [ ! -d "$STUDIO/assets/sfx/sounds" ]; then
 fi
 
 # 5. smoke checks
-node -e "import('$STUDIO/template/src/vendor/reel-studio/arabic/kashida.ts').then(m=>console.log('arabic module:', m.stretchWord('تحويل',2)))"
+node -e "import('./src/vendor/reel-studio/arabic/kashida.ts').then(m=>console.log('arabic module:', m.stretchWord('تحويل',2)))"
 npx remotion versions | head -2
 echo "== install complete =="

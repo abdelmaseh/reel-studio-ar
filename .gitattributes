@@ -1,0 +1,4 @@
+# Git for Windows defaults to autocrlf=true; CRLF breaks bash scripts ("set: pipefail: invalid option")
+*.sh text eol=lf
+*.mjs text eol=lf
+INSTALL.sh text eol=lf

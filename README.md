@@ -31,7 +31,7 @@ Remotion 4. One command installs everything; one script renders end to end.
 
 ## Quickstart
 
-**Requirements:** Node.js 18+, Git, curl. On Windows use **Git Bash**
+**Requirements:** Node.js 22.18+ (24 LTS is fine; the QA gate runs TypeScript natively), Git, curl. On Windows use **Git Bash**
 (`winget install OpenJS.NodeJS.LTS` and `winget install Git.Git`). `INSTALL.sh` checks them first and
 tells you exactly what is missing. **ffmpeg/ffprobe are installed automatically** into `tools/ffmpeg/bin`
 inside the repo if they are not already on your PATH (no admin rights, no PATH edits;
@@ -40,9 +40,9 @@ inside the repo if they are not already on your PATH (no admin rights, no PATH e
 ```bash
 ./INSTALL.sh                      # one-command setup (node modules, fonts, SFX, vendor copy)
 cd template
-npx remotion still src/index.ts Demo /tmp/preview.png --frame=45   # smoke test
-bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt
-node scripts/qa-gate.mjs out.mp4 --captions captions.json --expect-audio
+npx remotion still src/index.ts Demo preview.png --frame=45   # smoke test
+bash scripts/render-reel.sh Demo 250 out.mp4        # silent demo; add --voiceover vo.mp3 / --mix mix.txt for audio
+node scripts/qa-gate.mjs out.mp4
 ```
 
 Then read **RUNBOOK.md** — it is the full production manual (Egyptian Arabic + English):

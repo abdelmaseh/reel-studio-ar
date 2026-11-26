@@ -198,7 +198,7 @@ vertical and grade footage to the reel's look.
 البيئة CPU واحدة — ريندر متسلسل على شُقف (chunks) وبعدين دمج:
 
 ```bash
-bash scripts/render-reel.sh Demo 250 out.mp4 --mix mix.txt --max-mb 14
+bash scripts/render-reel.sh Demo 250 out.mp4 --max-mb 14   # add --voiceover/--mix when you have audio
 ```
 
 السكريبت بيعمل: ريندر متسلسل concurrency=1 → concat → خلط الصوت → تحويل الكونتينر لـ
