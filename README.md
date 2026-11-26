@@ -31,6 +31,12 @@ Remotion 4. One command installs everything; one script renders end to end.
 
 ## Quickstart
 
+**Requirements:** Node.js 18+, Git, curl. On Windows use **Git Bash**
+(`winget install OpenJS.NodeJS.LTS` and `winget install Git.Git`). `INSTALL.sh` checks them first and
+tells you exactly what is missing. **ffmpeg/ffprobe are installed automatically** into `tools/ffmpeg/bin`
+inside the repo if they are not already on your PATH (no admin rights, no PATH edits;
+`render-reel.sh` and `qa-gate.mjs` use that local copy first). macOS: `brew install ffmpeg`.
+
 ```bash
 ./INSTALL.sh                      # one-command setup (node modules, fonts, SFX, vendor copy)
 cd template

@@ -7,7 +7,9 @@
 //          [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]
 // Exit 1 on any FAIL. needs-review items print but never block.
 import {spawnSync} from 'node:child_process';
-import {statSync, readFileSync} from 'node:fs';
+import {statSync, readFileSync, existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {join, dirname} from 'node:path';
 import {joiningTypeOfCode} from '../src/vendor/reel-studio/arabic/joining.ts';
 import {kashidaSlots} from '../src/vendor/reel-studio/arabic/kashida.ts';
 
@@ -23,7 +25,10 @@ const fail = (code, detail) => findings.push({level: 'fail', code, detail});
 const review = (code, detail) => findings.push({level: 'needs-review', code, detail});
 const pass = (code, detail) => findings.push({level: 'pass', code, detail});
 
-const run = (cmd, a) => { const r = spawnSync(cmd, a, {encoding: 'utf8', maxBuffer: 64 * 1024 * 1024}); return (r.stdout ?? '') + (r.stderr ?? ''); };
+// ffmpeg/ffprobe: local copy from INSTALL.sh (<repo>/tools/ffmpeg/bin) first, then PATH
+const localBin = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'tools', 'ffmpeg', 'bin');
+const resolveBin = (name) => { for (const f of [name + '.exe', name]) { const p = join(localBin, f); if (existsSync(p)) return p; } return name; };
+const run = (cmd, a) => { const r = spawnSync(['ffmpeg', 'ffprobe'].includes(cmd) ? resolveBin(cmd) : cmd, a, {encoding: 'utf8', maxBuffer: 64 * 1024 * 1024}); return (r.stdout ?? '') + (r.stderr ?? ''); };
 
 // ---- 1. container spec ----
 const probe = JSON.parse(run('ffprobe', ['-v', 'error', '-print_format', 'json', '-show_format', '-show_streams', file]) || '{}');

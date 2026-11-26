@@ -4,6 +4,9 @@
 # Mix spec lines: <audio file>|<start sec>|<volume 0-1>
 set -euo pipefail
 cd "$(dirname "$0")/.."
+# prefer the local ffmpeg/ffprobe installed by INSTALL.sh (<repo>/tools/ffmpeg/bin), else use PATH
+LOCAL_FF="$(cd ../tools/ffmpeg/bin 2>/dev/null && pwd || true)"
+[ -n "$LOCAL_FF" ] && export PATH="$LOCAL_FF:$PATH"
 
 COMP="$1"; TOTAL="$2"; OUT="$3"; shift 3
 VO=""; MIX=""; FPS_OUT=60; MAXMB=14; CHUNK=100
