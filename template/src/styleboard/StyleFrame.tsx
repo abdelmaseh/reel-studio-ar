@@ -57,7 +57,7 @@ const V: Record<string, () => React.ReactElement> = {
     <div style={{position: 'absolute', top: 390, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 14, ...F}}>{['١', '٢', '٣'].map((n, i) => <div key={n} style={{width: 70, height: 70, borderRadius: 35, background: i === 0 ? '#FFD23F' : 'rgba(0,0,0,.5)', color: i === 0 ? '#111' : '#fff', fontWeight: 900, fontSize: 42, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #fff'}}>{n}</div>)}</div>
     <Words size={100} y={1150} items={[{t: 'جودة', c: '#FFD23F'}, {t: 'مش'}, {t: 'سرعة'}]} /><Vignette strength={0.3} /></>),
   '9': () => (<><Bg /><AbsoluteFill style={{background: 'linear-gradient(rgba(5,7,15,0.7), transparent 25%)'}} /><div style={{position: 'absolute', inset: 0}}><Callout3D kind="chips" text="" items={['كبد دهني', 'كوليسترول', 'دهون ثلاثية']} /></div>
-    <Words size={100} y={1150} items={[{t: 'بتتصور'}, {t: 'ناس', c: '#FFD23F'}, {t: 'معينة'}]} /></>),
+    <Words size={100} y={1150} items={[{t: 'بتتصور'}, {t: 'بجودة', c: '#FFD23F'}, {t: 'عالية'}]} /></>),
   '10': () => (<><Bg src={doc} />
     <div style={{position: 'absolute', inset: 0, clipPath: 'polygon(50% 0,100% 0,100% 100%,50% 100%)'}}><Bg src={doc} style={{filter: 'contrast(1.18) saturate(1.25) hue-rotate(-8deg) brightness(0.95)'}} /><AbsoluteFill style={{background: 'linear-gradient(160deg, rgba(0,120,140,0.28), rgba(255,140,40,0.18))', mixBlendMode: 'soft-light'}} /></div>
     <div style={{position: 'absolute', left: 538, top: 0, bottom: 0, width: 4, background: '#fff'}} />
