@@ -4,6 +4,7 @@
 // vendored reel-studio arabic module (Apache-2.0, https://github.com/mohamedabdou-ai/reel-studio).
 //
 // Usage: node scripts/qa-gate.mjs <file.mp4> [--captions captions.json] [--max-mb 14]
+//          [--min-word-sec 0.12] [--max-words-per-sec 4.5]  (caption timing lint)
 //          [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]
 // Exit 1 on any FAIL. needs-review items print but never block.
 import {spawnSync} from 'node:child_process';
@@ -104,6 +105,36 @@ if (capPath) {
     if (word.length > 40) review('long-token', `«${word.slice(0, 40)}…» is ${word.length} chars`);
   }
   if (!findings.some((f) => f.level === 'fail' && ['presentation-forms', 'zwnj-in-word', 'tatweel-edge', 'kashida-illegal'].includes(f.code))) pass('arabic-lint', `${words.length} words clean`);
+
+  // ---- 5b. caption timing lint (needs {text,start,end} words in seconds) ----
+  const timed = (caps.words ?? caps).filter((w) => w && typeof w === 'object' && Number.isFinite(w.start) && Number.isFinite(w.end));
+  if (timed.length) {
+    const before = findings.length;
+    const minDur = Number(opt('min-word-sec', 0.12));
+    const maxWps = Number(opt('max-words-per-sec', 4.5));
+    timed.forEach((w, i) => {
+      const prev = timed[i - 1];
+      if (w.end <= w.start) fail('caption-zero-duration', `«${w.text}» at ${w.start}s ends at ${w.end}s`);
+      else if (w.end - w.start < minDur) review('caption-too-fast', `«${w.text}» shows only ${(w.end - w.start).toFixed(2)}s (< ${minDur}s) — unreadable`);
+      if (prev) {
+        if (w.start < prev.start) fail('caption-out-of-order', `«${w.text}» starts at ${w.start}s before «${prev.text}» at ${prev.start}s`);
+        else if (w.start < prev.end - 0.02) fail('caption-overlap', `«${prev.text}» and «${w.text}» overlap by ${(prev.end - w.start).toFixed(2)}s`);
+        else if (w.start - prev.end > 1.5) review('caption-gap', `${(w.start - prev.end).toFixed(1)}s with no caption before «${w.text}» at ${w.start}s`);
+      }
+    });
+    // reading speed over any 2s sliding window
+    for (let i = 0; i < timed.length; i++) {
+      const n = timed.filter((w) => w.start >= timed[i].start && w.start < timed[i].start + 2).length;
+      if (n / 2 > maxWps) { review('caption-reading-speed', `${n} words in 2s from ${timed[i].start}s (> ${maxWps} words/s)`); break; }
+    }
+    const lastEnd = Math.max(...timed.map((w) => w.end));
+    if (fmt.duration) {
+      const d = Number(fmt.duration);
+      if (lastEnd > d + 0.05) fail('caption-past-end', `last caption ends at ${lastEnd.toFixed(2)}s but video is ${d.toFixed(2)}s`);
+      else if (d - lastEnd > 3) review('caption-ends-early', `captions stop ${(d - lastEnd).toFixed(1)}s before the video ends`);
+    }
+    if (findings.length === before) pass('caption-timing', `${timed.length} words, in order, readable, inside the video`);
+  }
 }
 
 let bad = 0;

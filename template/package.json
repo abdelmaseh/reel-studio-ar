@@ -8,6 +8,7 @@
     "render": "remotion render src/index.ts",
     "still": "remotion still src/index.ts",
     "qa": "node scripts/qa-gate.mjs",
+    "qa:selftest": "bash scripts/qa-selftest.sh",
     "broll": "node scripts/broll-fetch.mjs"
   },
   "dependencies": {

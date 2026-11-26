@@ -112,6 +112,10 @@ fallback: render at 200fps and average each 4 consecutive frames with ffmpeg tmi
 Per-word Tajawal captions from Whisper timings, legal-slot kashida on the spoken word,
 no letter-spacing, no per-letter animation, platform safe areas, and a hard lint gate.
 
+**فحص توقيت الكابشن (جديد):** البوابة بتفشل التسليم لو الكلمات متداخلة أو مش مترتبة أو مدتها صفر أو الكابشن بيعدي نهاية الفيديو، وبتنبّه (needs-review) لو كلمة أقل من 0.12 ثانية أو السرعة أكتر من 4.5 كلمة/ثانية أو فيه فجوة أكتر من 1.5 ثانية. الضبط: `--min-word-sec` و `--max-words-per-sec`. اختبار ذاتي: `npm run qa:selftest`.
+
+New caption timing lint: fails on overlap, out-of-order, zero-duration, captions past the video end; flags too-fast words, high reading speed and long gaps. Self-test: `npm run qa:selftest`.
+
 ---
 
 ## 6. الانتقالات | Transitions
