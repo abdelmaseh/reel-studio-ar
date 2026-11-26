@@ -75,7 +75,7 @@
 | **Style pack** | 10 style looks (`StyleFrame` composition, id 1..10): Hormozi, MrBeast, karaoke, documentary, podcast clip, kinetic typography, split screen (on request), hook + progress bar, 3D callouts, cinematic grade | `template/src/styleboard/`, `docs/STYLES.md` |
 | **Progress bar, varied punch-ins, SFX placement** | retention elements from the pro talking-head style guide | `Montage.tsx`, `docs/STYLES.md` |
 
-Notes: the style images above are in-studio renders of each look (not screenshots of real creators). External reference sources for each style are listed in `docs/STYLES.md`. Delivery is 30fps for the 3D-heavy montage composition.
+Notes: the style images above are in-studio renders of each look on a generated background (our own material, no third-party footage; not screenshots of real creators). External reference sources for each style are listed in `docs/STYLES.md`. Delivery is 30fps for the 3D-heavy montage composition.
 
 ---
 
