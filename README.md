@@ -20,6 +20,46 @@
 
 <div dir="rtl">
 
+## 📖 طريقة الاستخدام | How to use
+
+**الفكرة:** الاستوديو بيجمع ملفاتك الجاهزة (صوت، لقطات، كابشن) ويطلعلك ريل رأسي 1080x1920 جاهز للنشر. الاستوديو بيعمل المونتاج والموشن والكابشن والريندر. التعليق الصوتي واللقطات بتجهزهم إنت وتديهم له.
+
+### الخطوات
+
+1. **التثبيت (مرة واحدة)**: `./INSTALL.sh` من جذر الريبو. بيتأكد من Node 22.18+ و Git و curl، وبيحمّل ffmpeg لوحده لو مش موجود.
+2. **جرّب الديمو الأول** (عشان تتأكد إن كل حاجة شغالة): من فولدر `template`:
+   `npx remotion still src/index.ts Demo preview.png --frame=45`
+3. **جهّز الخامات** (الأوامر من فولدر `template` من هنا):
+   - التعليق الصوتي: ملف صوت `vo.mp3` أو `vo.wav` (إنت اللي بتسجله أو بتولده).
+   - اللقطات: لقطاتك، أو من مكتبة مجانية: `node scripts/broll-fetch.mjs "coffee pour" --n 3 --out work/broll` (إنجليزي بيدي نتايج أحسن، وكل لقطة معاها ملف ترخيص).
+   - الكابشن: النص العربي مع توقيت الكلمات. لو الـ Whisper غلط في اللهجة، صحّح النص وسيب التوقيت.
+4. **المونتاج على الإيقاع (اختياري)**:
+   - `npm run beats -- music.mp3 --out beats.json` يطلّع الـ beats.
+   - `node scripts/montage/cut-points.mjs voice.wav --out sil.json` يطلّع نقاط القص في سكتات الكلام.
+   - `npm run montage:plan -- --clips a.mp4 b.mp4 --beats beats.json --every 2 --seconds 20 --music song.mp3 --out src/montage/sample-edl.json` يعمل ملف المونتاج (EDL).
+5. **اختار الستايل**: عشرة ستايلات جاهزة (هورموزي، ميستر بيست، بودكاست، سينمائي، جرافيك 3D وغيرهم). المعاينة في "معرض الستايلات" تحت والتفاصيل في `docs/STYLES.md`. معاينة ستايل من فولدر `template`: `npx remotion still src/index.ts StyleFrame style.png --props='{"id":"3"}'` (غيّر الرقم من 1 لـ 10).
+6. **الريندر والتسليم** (من فولدر `template`):
+   `bash scripts/render-reel.sh <اسم الكومبوزيشن> <عدد الفريمات> out.mp4 --voiceover vo.mp3`
+   عدد الفريمات = الثواني × الـ fps بتاع الكومبوزيشن (المونتاج 30fps). لو عايز تضيف مؤثرات: `--mix mix.txt` (كل سطر: `ملف|ثانية البداية|الصوت من 0 لـ 1`).
+7. **فحص الجودة** (من فولدر `template`): `node scripts/qa-gate.mjs out.mp4` بيفحص الحجم (تحت 14MB للواتساب)، الفريمات السوداء، علو الصوت، وإيقاع القطع.
+
+### نصايح سريعة
+- الريل لازم يوصل لفكرة كاملة، والكلام المهم يخلص قبل القطع.
+- لو الحجم عدّى 14MB: `--max-mb` في `render-reel.sh`.
+- المرجع الكامل بالتفصيل: **[RUNBOOK.md](RUNBOOK.md)**.
+
+</div>
+
+<div dir="ltr">
+
+**English summary:** run `./INSTALL.sh`, smoke-test with the `Demo` composition, prepare your own voiceover, clips and caption text, optionally plan a beat-synced EDL (`npm run montage:plan`), then render with `template/scripts/render-reel.sh <Composition> <frames> out.mp4 --voiceover vo.mp3` and check with `node scripts/qa-gate.mjs out.mp4`. The studio edits, animates, captions and renders prepared media; it does not generate the voiceover. See [RUNBOOK.md](RUNBOOK.md) for every step.
+
+</div>
+
+---
+
+<div dir="rtl">
+
 ## ✨ المميزات | Capabilities
 
 </div>
