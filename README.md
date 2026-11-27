@@ -26,22 +26,138 @@
 
 ### الخطوات
 
-1. **التثبيت (مرة واحدة)**: `./INSTALL.sh` من جذر الريبو. بيتأكد من Node 22.18+ و Git و curl، وبيحمّل ffmpeg لوحده لو مش موجود.
-2. **جرّب الديمو الأول** (عشان تتأكد إن كل حاجة شغالة): من فولدر `template`:
-   `npx remotion still src/index.ts Demo preview.png --frame=45`
-3. **جهّز الخامات** (الأوامر من فولدر `template` من هنا):
-   - التعليق الصوتي: ملف صوت `vo.mp3` أو `vo.wav` (إنت اللي بتسجله أو بتولده).
-   - اللقطات: لقطاتك، أو من مكتبة مجانية: `node scripts/broll-fetch.mjs "coffee pour" --n 3 --out work/broll` (إنجليزي بيدي نتايج أحسن، وكل لقطة معاها ملف ترخيص).
-   - الكابشن: النص العربي مع توقيت الكلمات. لو الـ Whisper غلط في اللهجة، صحّح النص وسيب التوقيت.
-4. **المونتاج على الإيقاع (اختياري)**:
-   - `npm run beats -- music.mp3 --out beats.json` يطلّع الـ beats.
-   - `node scripts/montage/cut-points.mjs voice.wav --out sil.json` يطلّع نقاط القص في سكتات الكلام.
-   - `npm run montage:plan -- --clips a.mp4 b.mp4 --beats beats.json --every 2 --seconds 20 --music song.mp3 --out src/montage/sample-edl.json` يعمل ملف المونتاج (EDL).
-5. **اختار الستايل**: عشرة ستايلات جاهزة (هورموزي، ميستر بيست، بودكاست، سينمائي، جرافيك 3D وغيرهم). المعاينة في "معرض الستايلات" تحت والتفاصيل في `docs/STYLES.md`. معاينة ستايل من فولدر `template`: `npx remotion still src/index.ts StyleFrame style.png --props='{"id":"3"}'` (غيّر الرقم من 1 لـ 10).
-6. **الريندر والتسليم** (من فولدر `template`):
-   `bash scripts/render-reel.sh <اسم الكومبوزيشن> <عدد الفريمات> out.mp4 --voiceover vo.mp3`
-   عدد الفريمات = الثواني × الـ fps بتاع الكومبوزيشن (المونتاج 30fps). لو عايز تضيف مؤثرات: `--mix mix.txt` (كل سطر: `ملف|ثانية البداية|الصوت من 0 لـ 1`).
-7. **فحص الجودة** (من فولدر `template`): `node scripts/qa-gate.mjs out.mp4` بيفحص الحجم (تحت 14MB للواتساب)، الفريمات السوداء، علو الصوت، وإيقاع القطع.
+> كل خطوة تحت فيها: الشرح، **الأمر** (انسخه كما هو)، و**صورة** لشكل النجاح. الصور من تشغيل حقيقي للأوامر.
+
+| # | الخطوة | علامة النجاح |
+|---|--------|--------------|
+| 1 | نزّل الريبو | فولدر `reel-studio-ar` فيه `INSTALL.sh` |
+| 2 | التثبيت | `== install complete ==` |
+| 3 | جرّب الديمو | ملف `preview.png` اتعمل |
+| 4 | جهّز الخامات | صوت + لقطات + نص الكابشن |
+| 5 | اختار الستايل | معاينة الستايل بتفتح |
+| 6 | الريندر | `wrote out.mp4` |
+| 7 | فحص الجودة | `QA gate: PASS` |
+
+#### 1️⃣ نزّل الريبو
+افتح Git Bash (ويندوز) أو التيرمنال (ماك/لينكس) واكتب:
+
+<div dir="ltr">
+
+```bash
+git clone https://github.com/abdelmaseh/reel-studio-ar.git
+cd reel-studio-ar
+```
+
+</div>
+
+<p align="center"><img src="docs/img/install/step1-clone.png" alt="git clone" width="820"></p>
+
+#### 2️⃣ التثبيت (مرة واحدة)
+بيتأكد من Node 22.18+ و Git و curl، وبيحمّل ffmpeg لوحده لو مش موجود، وبينزّل الخطوط والمؤثرات. تقدر تشغّله تاني في أي وقت بأمان.
+
+<div dir="ltr">
+
+```bash
+./INSTALL.sh
+```
+
+</div>
+
+<p align="center"><img src="docs/img/install/step2-install.png" alt="INSTALL.sh" width="820"></p>
+
+> لو طلع `MISSING: ...` السكريبت بيقولك الأمر اللي تحله (مثلاً `winget install OpenJS.NodeJS.LTS`)، نفّذه وشغّل `./INSTALL.sh` تاني.
+
+#### 3️⃣ جرّب الديمو الأول
+عشان تتأكد إن كل حاجة شغالة. الأوامر من فولدر `template`:
+
+<div dir="ltr">
+
+```bash
+cd template
+npx remotion still src/index.ts Demo preview.png --frame=45
+```
+
+</div>
+
+<p align="center"><img src="docs/img/install/step3-smoke-cmd.png" alt="remotion still" width="820"></p>
+
+#### 4️⃣ جهّز الخامات
+التعليق الصوتي واللقطات بتجهزهم إنت وتديهم للاستوديو:
+- **التعليق الصوتي:** ملف `vo.mp3` أو `vo.wav` (إنت اللي بتسجله أو بتولده).
+- **اللقطات:** لقطاتك، أو من مكتبة مجانية (إنجليزي بيدي نتايج أحسن، وكل لقطة معاها ملف ترخيص):
+
+<div dir="ltr">
+
+```bash
+node scripts/broll-fetch.mjs "coffee pour" --n 3 --out work/broll
+```
+
+</div>
+- **الكابشن:** النص العربي على توقيت الكلام الحقيقي:
+
+<div dir="ltr">
+
+```bash
+python3 scripts/align-captions.py vo.wav script.txt captions.json
+```
+
+</div>
+
+**مونتاج على الإيقاع (اختياري):**
+
+<div dir="ltr">
+
+```bash
+npm run beats -- music.mp3 --out beats.json
+node scripts/montage/cut-points.mjs voice.wav --out sil.json
+npm run montage:plan -- --clips a.mp4 b.mp4 --beats beats.json --every 2 --seconds 20 --music song.mp3 --out src/montage/sample-edl.json
+```
+
+</div>
+
+#### 5️⃣ اختار الستايل
+عشرة ستايلات جاهزة (هورموزي، ميستر بيست، بودكاست، سينمائي، جرافيك 3D وغيرهم). المعاينة في "معرض الستايلات" تحت والتفاصيل في `docs/STYLES.md`. غيّر الرقم من 1 لـ 10:
+
+<div dir="ltr">
+
+```bash
+npx remotion still src/index.ts StyleFrame style.png --props='{"id":"3"}'
+```
+
+</div>
+
+#### 6️⃣ الريندر والتسليم
+عدد الفريمات = الثواني × الـ fps بتاع الكومبوزيشن (المونتاج 30fps). المثال هنا ديمو بدون صوت، وتقدر تضيف `--voiceover vo.mp3` وكمان `--mix mix.txt` للمؤثرات (كل سطر: `ملف|ثانية البداية|الصوت من 0 لـ 1`):
+
+<div dir="ltr">
+
+```bash
+bash scripts/render-reel.sh Demo 250 out.mp4
+# بصوتك:
+bash scripts/render-reel.sh <اسم الكومبوزيشن> <عدد الفريمات> out.mp4 --voiceover vo.mp3
+```
+
+</div>
+
+<p align="center"><img src="docs/img/install/step6-render.png" alt="render-reel.sh" width="820"></p>
+
+#### 7️⃣ فحص الجودة
+بيفحص الحجم (تحت 14MB للواتساب)، الفريمات السوداء، علو الصوت، وإيقاع القطع. لازم يطلع `QA gate: PASS`:
+
+<div dir="ltr">
+
+```bash
+node scripts/qa-gate.mjs out.mp4 --fps 60 --max-mb 14
+```
+
+</div>
+
+<p align="center"><img src="docs/img/install/step7-qa.png" alt="qa-gate" width="820"></p>
+
+#### ✅ شكل النتيجة
+على اليسار الصورة من الخطوة 3 وعلى اليمين فريم من `out.mp4` اللي طلع من الخطوة 6:
+
+<p align="center"><img src="docs/img/install/step8-output.png" alt="النتيجة" width="820"></p>
 
 ### نصايح سريعة
 - الريل لازم يوصل لفكرة كاملة، والكلام المهم يخلص قبل القطع.
