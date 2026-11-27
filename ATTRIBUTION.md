@@ -44,3 +44,5 @@ Tajawal (https://github.com/google/fonts/tree/main/ofl/tajawal) — SIL Open Fon
 Clips fetched by `template/scripts/broll-fetch.mjs` carry their source's license,
 written per clip into the manifest: Coverr (coverr.co/license), Mixkit
 (mixkit.co/license), Pexels (pexels.com/license), Pixabay (pixabay.com/service/license-summary/).
+
+The style gallery images (`docs/img/styles/`) use two Coverr stock stills (`template/public/styles-bg/bg_c.jpg`, `bg_d.jpg`) as backgrounds. The people shown are stock footage, not anyone connected to this project.

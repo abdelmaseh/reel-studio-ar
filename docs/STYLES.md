@@ -19,3 +19,32 @@ Pacing rules: cut pauses >0.35s, vary punch-ins, a strong punch at most once per
 - Text behind subject: youtube.com/watch?v=FpPG_F72i9E
 - Cinematic grade (teal-orange): youtube.com/watch?v=7n_uLntNZuY
 - Written specs: vidpal.ai/blog/how-to-make-hormozi-style-captions-2026, capto.video/blog/hormozi-style-captions-how-to-get-the-look, viewgum.com/guides/edit-a-talking-head-for-shorts
+
+
+## Style guide: how to pick and use each style
+Pick by what the viewer needs to do in the first 2 seconds. One style per reel; use the cinematic grade or the progress bar on top if you want.
+
+| # | Style | Use it for | Rules that make it work | How |
+|---|---|---|---|---|
+| 1 | Hormozi captions | Talking head, advice, how-to | 1 to 3 words on screen, heavy Cairo 900, black stroke, one accent word, mid-chest | `captionStyle: 'punch'`, StyleFrame `1` |
+| 2 | MrBeast pop | Hooks, big claims, reactions | Huge bouncy words, sticker or arrow pointing at the subject, high saturation | `BeastCaptions`, StyleFrame `2` |
+| 3 | Karaoke highlight | Voiceover over b-roll, songs, steady speech | The spoken word lights up, the rest stays white | StyleFrame `3` |
+| 4 | Documentary lower third | Interviews, expert intros | Name and role in a lower third, slight desaturation, letterbox | StyleFrame `4` |
+| 5 | Podcast clip | Cutting a long talk into a short | Video card, title, waveform, progress bar | StyleFrame `5` |
+| 6 | Kinetic typography | Voiceover with no footage, key phrases | Words as the visual, one idea per screen, size shows importance | StyleFrame `6` |
+| 7 | Split screen | Before/after, comparisons, reactions, story over gameplay | See the split screen rules below | StyleFrame `7` |
+| 8 | Hook + progress bar | Any reel that needs to hold to the end | A question in the first 2 seconds, a bar that fills until the payoff | StyleFrame `8` |
+| 9 | 3D callouts | Numbers, headlines, chips on top of footage | Callouts in the top band, never over the face | `Broll3D` |
+| 10 | Cinematic grade | Brand and mood pieces | Teal-orange grade, vignette, grain; `grade: 'cinematic'` in Montage | StyleFrame `10` |
+
+Text behind subject is a Montage feature, not a StyleFrame: cut the person out with `scripts/subject_matte.py` and use the clip field `behind`.
+
+### Split screen rules (use on request)
+- Vertical reels use top and bottom, not side by side (1080x1920 canvas). Unequal splits such as 60/40 work when one clip is the focus.
+- Split screen is a format choice, not a growth trick. Use it only when the second clip adds information or keeps the eye moving.
+- Pick one audio source, and keep captions out of the platform UI areas (top bar and the bottom 20%).
+- Typical pairings: before/after, two products or techniques, reaction, narrated story over continuous footage.
+- References: https://autoshort.io/blog/split-screen-video-shorts-reels , https://www.solidlabs.com/ad-patterns/editing/stacked-split-screen , https://reelstck.com/layouts , https://apollovid.com/templates
+
+### Pacing rules for every style
+Cut pauses longer than 0.35s. Vary the punch-in. At most one strong punch per 10 seconds. Put SFX 1 to 3 frames before the sound. The speech must finish before the cut, and the QA gate and `npm run preflight` check for it.

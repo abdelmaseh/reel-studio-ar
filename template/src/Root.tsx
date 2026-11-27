@@ -29,7 +29,7 @@ export const Root: React.FC = () => (
     <Composition id="Montage30" component={Montage} durationInFrames={Math.round(edlSeconds(sampleEdl as any) * 30)} fps={30} width={1080} height={1920}
       defaultProps={{edl: sampleEdl} as MontageProps}
       calculateMetadata={({props}) => ({durationInFrames: Math.max(1, Math.round(edlSeconds(props.edl) * 30))})} />
-    <Composition id="Ad" component={Ad as any} durationInFrames={1440} fps={30} width={1080} height={1920} defaultProps={{beats: [], captions: [], audio: "", total: 48} as any} />
+    <Composition id="Ad" component={Ad as any} durationInFrames={1863} fps={30} width={1080} height={1920} defaultProps={{beats: [], captions: [], audio: "", total: 48} as any} />
     <Composition id="Explainer" component={Explainer as any} durationInFrames={750} fps={30} width={1080} height={1920} defaultProps={{beats: [], captions: [], audio: "", total: 25} as any} />
     <Composition id="StyleFrame" component={StyleFrame} durationInFrames={1} fps={FPS} width={1080} height={1920} defaultProps={{id: '1'}} />
     <Composition id="StyleCard3D" component={StyleCard3D} durationInFrames={1} fps={FPS} width={1080} height={1920} />

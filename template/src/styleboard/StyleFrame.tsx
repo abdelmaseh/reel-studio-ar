@@ -36,7 +36,7 @@ const V: Record<string, () => React.ReactElement> = {
     <Words size={104} y={1150} items={[{t: 'جودة'}, {t: 'مش', c: '#111', bg: '#FFD23F', s: 1.08}, {t: 'سرعة'}]} /></>),
   '4': () => (<><Bg src={host} style={{filter: 'sepia(0.28) contrast(1.12) saturate(0.85) brightness(0.92)', transform: 'scale(1.08)'}} /><Vignette strength={0.6} /><Grain opacity={0.12} />
     <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: 330, background: '#000'}} /><div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: 330, background: '#000'}} />
-    <div style={{position: 'absolute', left: 70, bottom: 480, borderLeft: '8px solid #F5C451', paddingLeft: 28, ...F, direction: 'rtl', borderRight: 'none'}}><div style={{color: '#fff', fontWeight: 900, fontSize: 60}}>مخرج ريلز</div><div style={{color: '#F5C451', fontWeight: 700, fontSize: 38}}>استوديو سيحا</div></div>
+    <div style={{position: 'absolute', left: 70, bottom: 480, borderLeft: '8px solid #F5C451', paddingLeft: 28, ...F, direction: 'rtl', borderRight: 'none'}}><div style={{color: '#fff', fontWeight: 900, fontSize: 60}}>مخرج ريلز</div><div style={{color: '#F5C451', fontWeight: 700, fontSize: 38}}>استوديو الريلز</div></div>
     <div style={{position: 'absolute', left: 80, right: 80, bottom: 150, textAlign: 'center', color: '#fff', ...F, fontWeight: 700, fontSize: 50, textShadow: '0 2px 12px #000'}}>ريل بريميوم في أمر واحد</div></>),
   '5': () => (<AbsoluteFill style={{background: 'linear-gradient(180deg,#0b1020,#151c3a)'}}>
     <div style={{position: 'absolute', left: 40, right: 40, top: 150, height: 1000, borderRadius: 44, overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,.6)'}}><Bg style={{objectPosition: '50% 20%'}} /></div>
