@@ -8,7 +8,18 @@ import {ARABIC_FONT} from '../fonts';
 
 export type BrollKind = 'title' | 'stat' | 'tunnel' | 'stack';
 export type BrollProps = {kind: BrollKind; text: string; sub?: string; items?: string[]};
-export const PAL = {bg1: '#05070F', bg2: '#0E1733', gold: '#F5C451', goldDeep: '#9A6A12', teal: '#2DD4BF', tealDeep: '#0B6E66', ice: '#E8F0FF', rose: '#FF5C8A'};
+export const PAL = {bg1: '#05070F', bg2: '#0E1733', gold: '#F5C451', goldDeep: '#9A6A12', teal: '#2DD4BF', tealDeep: '#0B6E66', ice: '#E8F0FF', rose: '#FF5C8A', slab: '#13204A', accent: '#FFD23F'};
+// Style 9 looks. Every render picks a different one (see scripts/pick-theme.mjs) so videos do not look memorized.
+export const THEMES: {name: string; pal: Partial<typeof PAL>}[] = [
+  {name: 'gold-teal', pal: {}},
+  {name: 'violet-magenta', pal: {bg1: '#0A0614', bg2: '#2A1450', gold: '#E879F9', goldDeep: '#7E1D8F', teal: '#60A5FA', tealDeep: '#1E3A8A', rose: '#FB7185', slab: '#2A1450', accent: '#F0ABFC'}},
+  {name: 'lime-graphite', pal: {bg1: '#07090A', bg2: '#16201A', gold: '#A3E635', goldDeep: '#3F6212', teal: '#22D3EE', tealDeep: '#155E75', rose: '#FACC15', slab: '#14231B', accent: '#BEF264'}},
+  {name: 'ember-red', pal: {bg1: '#0C0504', bg2: '#3B0F0A', gold: '#FB923C', goldDeep: '#9A3412', teal: '#F43F5E', tealDeep: '#881337', rose: '#FDE047', slab: '#3B0F0A', accent: '#FDBA74'}},
+  {name: 'ocean-aqua', pal: {bg1: '#030B14', bg2: '#08305A', gold: '#38BDF8', goldDeep: '#075985', teal: '#34D399', tealDeep: '#065F46', rose: '#F472B6', slab: '#0B3A6B', accent: '#7DD3FC'}},
+  {name: 'mono-ice', pal: {bg1: '#08090C', bg2: '#1E232E', gold: '#E5E7EB', goldDeep: '#6B7280', teal: '#94A3B8', tealDeep: '#334155', rose: '#FCA5A5', slab: '#232A38', accent: '#F8FAFC'}},
+];
+const hexA = (h: string, a: number) => { const n = parseInt(h.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; };
+export const applyTheme = (i: number = 0) => { const t = THEMES[((i % THEMES.length) + THEMES.length) % THEMES.length]; Object.assign(PAL, THEMES[0].pal, {bg1: '#05070F', bg2: '#0E1733', gold: '#F5C451', goldDeep: '#9A6A12', teal: '#2DD4BF', tealDeep: '#0B6E66', slab: '#13204A', accent: '#FFD23F'}, t.pal); return t.name; };
 
 const C: React.FC<{children: React.ReactNode; y?: number}> = ({children, y = 0}) => (
   <div style={{position: 'absolute', left: '50%', top: '50%', transform: `translateY(${y}px)`, transformStyle: 'preserve-3d'}}>{children}</div>
@@ -28,7 +39,7 @@ const Floaty: React.FC<{z: number; x: number; y: number; phase: number; amp?: nu
 const Backdrop: React.FC = () => {
   const f = useCurrentFrame();
   return (<AbsoluteFill style={{background: `radial-gradient(ellipse at ${50 + Math.sin(f / 90) * 12}% 38%, ${PAL.bg2} 0%, ${PAL.bg1} 72%)`}}>
-    <AbsoluteFill style={{background: `radial-gradient(circle at 80% 18%, rgba(245,196,81,0.16), transparent 45%), radial-gradient(circle at 15% 85%, rgba(45,212,191,0.14), transparent 50%)`}} />
+    <AbsoluteFill style={{background: `radial-gradient(circle at 80% 18%, ${hexA(PAL.gold, 0.16)}, transparent 45%), radial-gradient(circle at 15% 85%, ${hexA(PAL.teal, 0.14)}, transparent 50%)`}} />
   </AbsoluteFill>);
 };
 const Hero: React.FC<{text: string; size: number; p: number; y?: number}> = ({text, size, p, y = -150}) => (
@@ -56,8 +67,8 @@ export const Broll3D: React.FC<BrollProps> = ({kind, text, sub, items = []}) => 
       <Backdrop />
       <Stage3D orbitX={4} orbitY={9} speed={0.22} push={120} durF={90}>
         {/* far glass slabs: parallax depth */}
-        <Layer z={-700} x={-260} y={-520} rotZ={14} dof={0}><C><Slab3D w={620} h={620} depth={26} radius={150} front="rgba(255,255,255,0.07)" side="#13204A" /></C></Layer>
-        <Layer z={-520} x={320} y={300} rotZ={-10} dof={0}><C><Slab3D w={520} h={520} depth={26} radius={130} front="rgba(45,212,191,0.16)" side={PAL.tealDeep} /></C></Layer>
+        <Layer z={-700} x={-260} y={-520} rotZ={14} dof={0}><C><Slab3D w={620} h={620} depth={26} radius={150} front="rgba(255,255,255,0.07)" side={PAL.slab} /></C></Layer>
+        <Layer z={-520} x={320} y={300} rotZ={-10} dof={0}><C><Slab3D w={520} h={520} depth={26} radius={130} front={hexA(PAL.teal, 0.16)} side={PAL.tealDeep} /></C></Layer>
         {kind === 'title' && (<>
           <Floaty z={-240} x={-340} y={-560} phase={0}><Cube3D size={170} color={PAL.gold} rx={f * 0.9} ry={f * 1.3} /></Floaty>
           <Floaty z={200} x={350} y={-420} phase={2}><Sphere3D size={160} base={PAL.teal} /></Floaty>

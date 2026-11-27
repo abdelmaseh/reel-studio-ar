@@ -48,3 +48,8 @@ Text behind subject is a Montage feature, not a StyleFrame: cut the person out w
 
 ### Pacing rules for every style
 Cut pauses longer than 0.35s. Vary the punch-in. At most one strong punch per 10 seconds. Put SFX 1 to 3 frames before the sound. The speech must finish before the cut, and the QA gate and `npm run preflight` check for it.
+
+## Word-aligned captions and fresh style-9 looks
+- `python3 template/scripts/align-captions.py vo.wav script.txt out.json` puts your corrected Arabic text on the real timing of the voiceover (speech and pauses come from the audio, not a flat split). Uses `faster-whisper` for the timeline if installed, otherwise ffmpeg silence detection. Use `out.json` `captions` as the reel's caption chunks.
+- Style 9 (3D motion graphics) has 6 looks (`THEMES` in `template/src/broll3d/Broll3D.tsx`). Run `node template/scripts/pick-theme.mjs` before each render and put the printed `theme` number in the `Ad` props: it never repeats the previous pick, so every video comes out with new colors.
+- There is no background music or bed sound in the studio. Only the voiceover and short SFX are mixed.

@@ -6,7 +6,6 @@ template/public/fonts/
 *.mp4
 *.mp3
 *.wav
-!template/public/audio/demo-bed.wav
 .DS_Store
 npm-debug.log*
 template/src/vendor/
@@ -14,3 +13,4 @@ tools/
 template/public/interview/
 template/public/explainer/
 template/public/ad/
+template/scripts/.last-theme

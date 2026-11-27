@@ -12,7 +12,6 @@ import {DotZoom} from '../vendor/reel-studio/core/transitions-v4/dot-zoom';
 import {ZoomThrough} from '../vendor/reel-studio/core/transitions-v4/zoom-through';
 import {Blinds} from '../vendor/reel-studio/core/transitions-v4/blinds';
 import {Grain, Vignette, FlashBloom} from '../vendor/reel-studio/core/transitions';
-import {useBands} from '../vendor/reel-studio/core/audioviz';
 import {TajawalCaptions} from '../captions/TajawalCaptions';
 import {Fonts, ARABIC_FONT} from '../fonts';
 import {STYLES, ACTIVE_STYLE, type StyleName} from '../styles';
@@ -40,7 +39,9 @@ const Card: React.FC<{title: string; sub: string; accent: string; bg: string; bo
 );
 
 const Bands: React.FC<{accent: string; accent2: string}> = ({accent, accent2}) => {
-  const bands = useBands(staticFile('audio/demo-bed.wav'), 28, {band: 'full', smoothing: 0.4});
+  // decorative bars driven by the frame number: no audio file, nothing audible
+  const fr = useCurrentFrame();
+  const bands = Array.from({length: 28}, (_, i) => 0.42 + 0.3 * Math.sin(fr / 5 + i * 0.65) * Math.cos(fr / 11 - i * 0.3));
   return (
     <div style={{position: 'absolute', bottom: 240, left: 90, right: 90, height: 160, display: 'flex', alignItems: 'flex-end', gap: 8, direction: 'ltr'}}>
       {bands.map((b, i) => (

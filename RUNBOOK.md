@@ -289,3 +289,7 @@ captions get 1.45 line height for diacritics; Plex Sans Arabic and Almarai are i
 - اختبار ذاتي: `npm run montage:selftest`.
 
 Beat detection, speech-silence cut points, cut snapping, an EDL-driven Remotion `Montage` composition (cuts, flash/whip/zoom transitions, constant push-in, speed, J-cuts), and a pacing lint in the QA gate (shot length, late hook). Self-test: `npm run montage:selftest`.
+
+## الكابشن بتوقيت الكلمة | Word-aligned captions
+`python3 scripts/align-captions.py vo.wav script.txt out.json` يحط النص العربي المصحح على توقيت الصوت الحقيقي (السكتات تفضل سكتات). Whisper بيغلط في اللهجة، فبنستخدم توقيته بس مش نصه.
+Puts your corrected text on the voiceover's real speech timeline, so captions follow the voice and do not drift.
