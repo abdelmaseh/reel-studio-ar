@@ -4,7 +4,7 @@
 // vendored reel-studio arabic module (Apache-2.0, https://github.com/mohamedabdou-ai/reel-studio).
 //
 // Usage: node scripts/qa-gate.mjs <file.mp4> [--captions captions.json] [--max-mb 14]
-//          [--max-shot-sec 4.5] [--hook-by-sec 2.0] [--scene-th 0.25] [--no-pacing]  (pacing lint)
+//          [--max-shot-sec 4.5] [--hook-by-sec 2.0] [--scene-th 0.25] [--no-pacing] [--props props.json]  (pacing lint; --props uses declared beat starts instead of scene detection)
 //          [--min-word-sec 0.12] [--max-words-per-sec 4.5]  (caption timing lint)
 //          [--expect-video-sec N] [--expect-audio] [--fps 60] [--size 1080x1920]
 // Exit 1 on any FAIL. needs-review items print but never block.
@@ -77,7 +77,10 @@ if (frzHits.length) review('freeze-frames', `frozen >= 1.2s at ${frzHits.map((m)
 if (v && !has('no-pacing')) {
   const maxShot = Number(opt('max-shot-sec', 4.5)); const hookBy = Number(opt('hook-by-sec', 2.0));
   const sc = run('ffmpeg', ['-i', file, '-vf', `select='gt(scene,${opt('scene-th', 0.25)})',showinfo`, '-an', '-f', 'null', '-']);
-  const cuts = [...sc.matchAll(/pts_time:([\d.]+)/g)].map((m) => Number(m[1]));
+  let cuts = [...sc.matchAll(/pts_time:([\d.]+)/g)].map((m) => Number(m[1]));
+  // --props props.json: Ad/montage props with declared beats[].from. Dark or one-theme edits fool scene detection, so declared beat starts are the cuts.
+  const pf = opt('props', '');
+  if (pf && existsSync(pf)) { try { const bs = JSON.parse(readFileSync(pf, 'utf8')).beats ?? []; const d = bs.map((b) => Number(b.from)).filter((x) => x > 0.05).sort((x, y) => x - y); if (d.length) { cuts = d; pass('pacing-source', `using ${d.length} declared beat starts from ${pf}`); } } catch { review('pacing-source', `could not read beats from ${pf}`); } }
   const dur = Number(fmt.duration ?? 0);
   const edges = [0, ...cuts, dur].filter((x, i, arr) => i === 0 || x > arr[i - 1]);
   const shots = edges.slice(1).map((e, i) => +(e - edges[i]).toFixed(2));

@@ -293,3 +293,6 @@ Beat detection, speech-silence cut points, cut snapping, an EDL-driven Remotion 
 ## الكابشن بتوقيت الكلمة | Word-aligned captions
 `python3 scripts/align-captions.py vo.wav script.txt out.json` يحط النص العربي المصحح على توقيت الصوت الحقيقي (السكتات تفضل سكتات). Whisper بيغلط في اللهجة، فبنستخدم توقيته بس مش نصه.
 Puts your corrected text on the voiceover's real speech timeline, so captions follow the voice and do not drift.
+
+### QA gate with declared beats
+For Ad/montage renders with dark or single-theme looks, scene detection sees one long shot. Pass the props file: `node scripts/qa-gate.mjs out.mp4 --fps 30 --props props.json` and the pacing lint uses the real beat starts.
